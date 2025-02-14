@@ -1,0 +1,68 @@
+<ion-content>
+  <div class="logo">
+    <img src="assets/logos/logo_tete_ceres.png" alt="">
+  </div>
+
+  <div class="login-container">
+    <h1 class="orbitron_extrabold">Login</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input 
+        type="email" 
+        formControlName="email" 
+        [clearInput]="true"
+        autocomplete="off"
+        autocapitalize="none"
+        
+        spellcheck="fasle"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        A valid email is required.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input 
+        type="password" 
+        formControlName="password"
+        autocomplete="new-password"
+    autocapitalize="none"
+    spellcheck="fasle" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        Password is required.
+      </ion-text>
+
+      <div class="button-container">
+        <ion-button type="submit" [disabled]="loginForm.invalid" class="login orbitron_bold">Login</ion-button>
+      </div>
+      <ion-text color="danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ion-text>
+    </form>
+
+    <!-- Mot de passe oublié -->
+    <p class="forgot-password" (click)="toggleResetPassword()">
+      Forgot Password?
+    </p>
+
+    <!-- Champ de réinitialisation du mot de passe (Affiché uniquement si showResetPassword = true) -->
+    <div *ngIf="showResetPassword" class="reset-password-container">
+      <ion-item>
+        <ion-label position="floating">Enter your email</ion-label>
+        <ion-input type="email" [(ngModel)]="resetEmail"></ion-input>
+      </ion-item>
+      <ion-button class="reset-mail-button" (click)="sendResetPasswordEmail()">Reset Password</ion-button>
+      <ion-text color="success" *ngIf="resetSuccessMessage">
+        {{ resetSuccessMessage }}
+      </ion-text>
+      <ion-text color="danger" *ngIf="resetErrorMessage">
+        {{ resetErrorMessage }}
+      </ion-text>
+    </div>
+
+    <p class="register-link jura_bold">Don't have an account? <a (click)="goToRegister()">Register</a></p>
+  </div>
+</ion-content>

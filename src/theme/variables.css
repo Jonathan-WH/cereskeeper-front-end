@@ -1,0 +1,103 @@
+/**
+ * Ionic Dark Theme
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+/*@import "@ionic/angular/css/palettes/dark.system.css";*/
+
+:root {
+    /* 🌿 Couleurs principales */
+    --ion-color-primary: #4CAF50;
+    /* Vert principal */
+    --ion-color-primary-rgb: 76, 175, 80;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #43a047;
+    --ion-color-primary-tint: #66bb6a;
+
+    --ion-color-secondary: #81C784;
+    /* Vert clair */
+    --ion-color-secondary-rgb: 129, 199, 132;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #74b175;
+    --ion-color-secondary-tint: #98d29d;
+
+    /* 🌎 Fond & texte */
+    --ion-background-color: #F5F5F5;
+    /* Blanc cassé */
+    --ion-background-color-rgb: 245, 245, 245;
+    --ion-text-color: #212121;
+    /* Noir profond */
+    --ion-text-color-rgb: 33, 33, 33;
+
+    /* ✨ Accents dorés */
+    --ion-color-gold: #D4B47E;
+    --ion-color-gold-dark: #C1A878;
+    --ion-color-gray-brown: #676251;
+    --ion-color-black-warm: #2F2B26;
+}
+
+/* 🎨 Mode sombre */
+.dark-mode {
+    --ion-background-color: #212121;
+    /* Fond noir profond */
+    --ion-text-color: #F5F5F5;
+    /* Texte blanc cassé */
+}
+
+
+
+.orbitron_light {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.orbitron_medium {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.orbitron_bold {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.orbitron_extrabold {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+.jura_light {
+    font-family: "Jura", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+.jura_medium {
+    font-family: "Jura", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+.jura_bold {
+    font-family: "Jura", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }

@@ -1,0 +1,7 @@
+/* Applique un dégradé en fond sur ion-content */
+ion-content {
+    --ion-background-color: transparent; /* Désactive le fond blanc d’Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a); /* Dégradé vert */
+    display: flex;
+    flex-direction: column;
+}

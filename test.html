@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Robot Réaliste en Action</title>
+  <!-- Inclusion de GSAP via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <svg id="robot-svg" width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Dégradés pour simuler des surfaces métalliques et réalistes -->
+      <linearGradient id="metalGradientRealistic" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d0d0d0"/>
+        <stop offset="50%" stop-color="#aaaaaa"/>
+        <stop offset="100%" stop-color="#888888"/>
+      </linearGradient>
+      <!-- Dégradé pour le sol réaliste -->
+      <linearGradient id="groundGradientRealistic" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4b8f29"/>
+        <stop offset="100%" stop-color="#356620"/>
+      </linearGradient>
+      <!-- Dégradé pour le ciel -->
+      <linearGradient id="skyGradientRealistic" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a8c0ff"/>
+        <stop offset="100%" stop-color="#5d8aa8"/>
+      </linearGradient>
+      <!-- Filtre d'ombre portée pour plus de réalisme -->
+      <filter id="realisticShadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feDropShadow dx="5" dy="5" stdDeviation="5" flood-color="#000" flood-opacity="0.5"/>
+      </filter>
+      <!-- Filtre d'ombre interne pour donner de la profondeur aux parties métalliques -->
+      <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feComponentTransfer in="SourceAlpha">
+          <feFuncA type="table" tableValues="1 0" />
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="3"/>
+        <feOffset dx="0" dy="0" result="offsetblur"/>
+        <feComposite operator="arithmetic" k2="-1" k3="1" in="offsetblur"/>
+        <feFlood flood-color="black" flood-opacity="0.5"/>
+        <feComposite in2="offsetblur" operator="in"/>
+        <feComposite in2="SourceAlpha" operator="in" result="shadowDiff"/>
+        <feComposite in="SourceGraphic" in2="shadowDiff" operator="over"/>
+      </filter>
+    </defs>
+
+    <!-- Fond du ciel -->
+    <rect width="600" height="600" fill="url(#skyGradientRealistic)" />
+    <!-- Sol réaliste -->
+    <rect x="0" y="500" width="600" height="100" fill="url(#groundGradientRealistic)" />
+
+    <!-- Groupe principal du robot -->
+    <g id="robot" transform="translate(300,300)" filter="url(#realisticShadow)">
+      <!-- Corps du robot avec finition métallique et ombre interne -->
+      <rect id="body" x="-60" y="-20" width="120" height="160" rx="15" ry="15" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+      <!-- Détails du corps : panneaux d'affichage et voyants lumineux -->
+      <g id="body-details">
+        <rect x="-50" y="0" width="100" height="30" rx="5" ry="5" fill="#777" />
+        <circle cx="-30" cy="20" r="5" fill="#e33" />
+        <circle cx="0" cy="20" r="5" fill="#3e3" />
+        <circle cx="30" cy="20" r="5" fill="#33e" />
+      </g>
+      <!-- Tête du robot avec détails soignés -->
+      <g id="head" transform="translate(0,-80)">
+        <rect x="-40" y="-30" width="80" height="60" rx="10" ry="10" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+        <!-- Yeux réalistes avec reflets -->
+        <g id="eyes">
+          <ellipse cx="-15" cy="0" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="15" cy="0" rx="8" ry="10" fill="#fff"/>
+          <circle cx="-15" cy="0" r="3" fill="#000"/>
+          <circle cx="15" cy="0" r="3" fill="#000"/>
+          <circle cx="-15" cy="0" r="1" fill="#fff" opacity="0.7"/>
+          <circle cx="15" cy="0" r="1" fill="#fff" opacity="0.7"/>
+        </g>
+        <!-- Antenne avec effet lumineux -->
+        <line x1="0" y1="-30" x2="0" y2="-50" stroke="#555" stroke-width="2"/>
+        <circle cx="0" cy="-55" r="4" fill="#f00" filter="url(#innerShadow)"/>
+      </g>
+      <!-- Bras gauche animé avec pelle de creusage -->
+      <g id="left-arm" transform="translate(-60,10)">
+        <!-- Partie supérieure du bras -->
+        <rect x="-20" y="0" width="20" height="40" rx="5" ry="5" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+        <!-- Bras de creusage (inférieur) -->
+        <g id="digging-arm" transform="translate(-20,40)">
+          <rect x="-15" y="0" width="15" height="50" rx="5" ry="5" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+          <!-- Pelle détaillée -->
+          <g id="shovel" transform="translate(-15,50)">
+            <path d="M0,0 L40,0 L35,20 L0,20 Z" fill="#666" stroke="#444" stroke-width="2" filter="url(#innerShadow)"/>
+            <line x1="0" y1="0" x2="40" y2="0" stroke="#444" stroke-width="1" />
+          </g>
+        </g>
+      </g>
+      <!-- Bras droit statique -->
+      <g id="right-arm" transform="translate(60,10)">
+        <rect x="0" y="0" width="20" height="50" rx="5" ry="5" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+      </g>
+      <!-- Jambes du robot -->
+      <g id="legs" transform="translate(0,140)">
+        <rect x="-30" y="0" width="25" height="50" rx="5" ry="5" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+        <rect x="5" y="0" width="25" height="50" rx="5" ry="5" fill="url(#metalGradientRealistic)" stroke="#555" stroke-width="2" filter="url(#innerShadow)"/>
+      </g>
+    </g>
+
+    <!-- Particules de poussière simulant l'impact du creusage -->
+    <g id="dust-group">
+      <circle class="dust" cx="260" cy="510" r="3" fill="#bbb" opacity="0"/>
+      <circle class="dust" cx="270" cy="515" r="3" fill="#bbb" opacity="0"/>
+      <circle class="dust" cx="280" cy="520" r="3" fill="#bbb" opacity="0"/>
+    </g>
+  </svg>
+
+  <script>
+    // Fonction pour animer les particules de poussière
+    function animateDust() {
+      gsap.fromTo(".dust",
+        { opacity: 1, y: 0, scale: 1 },
+        { opacity: 0, y: -20, scale: 1.5, duration: 0.5, ease: "power1.out", stagger: 0.1 }
+      );
+    }
+
+    // Timeline GSAP pour animer le mouvement de creusage du bras gauche
+    gsap.timeline({ repeat: -1, repeatDelay: 0.5 })
+      .to("#digging-arm", {
+        duration: 0.5,
+        rotation: 60,
+        transformOrigin: "0 0",
+        ease: "power2.in"
+      })
+      .call(animateDust)
+      .to("#digging-arm", {
+        duration: 0.3,
+        rotation: 0,
+        transformOrigin: "0 0",
+        ease: "power2.out"
+      });
+  </script>
+</body>
+</html>

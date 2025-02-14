@@ -1,0 +1,229 @@
+/* Applique un dégradé en fond sur ion-content */
+ion-content {
+    --ion-background-color: transparent; /* Désactive le fond blanc d’Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a); /* Dégradé vert */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 📌 Conteneur principal */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+   justify-content: space-between;
+
+   
+}
+
+/* 📌 Header + logo */
+.header_welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1
+}
+
+/* Centrage du logo */
+.header {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Logo */
+.logo {
+    width: 70%;
+    height: auto;
+    animation: fadeIn 1.5s ease-in-out, float 3s ease-in-out infinite;
+}
+
+/* 📌 Texte de bienvenue */
+.welcome-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--ion-text-color);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* 📌 Style du ion-card */
+.welcome-text ion-card {
+    background-color: white;
+    width: 80%;
+    margin: auto;
+    animation: fadeInCards 1s ease-in-out forwards;
+}
+
+/* Texte dans le ion-card */
+.welcome-text ion-card ion-card-content {
+    color: black;
+}
+
+/* Texte de titre de ion-card */
+.welcome-text ion-card ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+}
+
+/* Texte de description de ion-card */
+.welcome-text ion-card ion-card-content {
+    font-size: 1rem;
+    color: black;
+    text-align: justify;
+}
+
+
+/* 📌 Boutons */
+.action-buttons {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px; /* Ajoute un espace entre les boutons */
+}
+
+/* 📌 Style du bouton Register */
+ion-button.register {
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+    animation: fadeInCards 1s ease-in-out forwards;
+}
+/* 📌 Style du bouton Login */
+ion-button.login {
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #43a047;
+    --background-hover: #2e7031;
+    --background-activated: #2e7031;
+    animation: fadeInCards 1s ease-in-out forwards;
+}
+
+/* 📌 Responsive : Ajustements pour mobile */
+@media (max-width: 750px) {
+    ion-content{
+        padding-top: 20px;
+    }
+    .logo {
+        width: 50%;
+        height: auto;
+    }
+
+    .header_welcome {
+        flex-direction: column;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons ion-button {
+        width: 80%;
+        align-self: center;
+    }
+}
+
+
+
+/* Style des cartes */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    padding-bottom: 30px;
+}
+
+
+.feature {
+    text-align: center;
+    width: 280px;
+    --ion-background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(10px);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Quand l'animation est terminée, on ajoute une classe pour activer le hover */
+.feature:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation d’apparition des cartes */
+@keyframes fadeInCards {
+    from {
+        opacity: 0;
+        transform: translateY(10px); /* Apparition avec légère montée */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Icônes */
+.feature ion-icon {
+    font-size: 4rem;
+    color: var(--ion-color-primary);
+    margin-top: 10px;
+    align-self: center;
+}
+
+/* Titres des cartes */
+.feature ion-card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: var(--ion-text-color);
+}
+
+/* Texte secondaire */
+.feature ion-card-content {
+    font-size: 0.9rem;
+    color: var(--ion-text-color);
+    opacity: 0.8;
+}
+
+/* Responsive : Passe en colonne sur mobile */
+@media (max-width: 750px) {
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature {
+        width: 80%;
+    }
+}
+
+/* 📌 Animation d'apparition du logo */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}

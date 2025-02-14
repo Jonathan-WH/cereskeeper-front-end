@@ -1,0 +1,106 @@
+/* Applique un dégradé en fond sur ion-content */
+ion-content {
+    --ion-background-color: transparent;
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a);
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+}
+
+div.logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+div.logo img {
+    width: 300px;
+    height: auto;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+div.login-container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-self: center;
+    justify-self: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container ion-button {
+    width: 80%;
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+}
+
+p.register-link, p.forgot-password {
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+p.forgot-password:hover {
+    text-decoration: underline;
+}
+
+p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+p.forgot-password {
+    margin-bottom: 10px;
+}
+
+ion-button.reset-mail-button{
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #43a047;
+    --background-hover: #2e7031;
+    --background-activated: #2e7031;
+    animation: fadeInCards 1s ease-in-out forwards;
+}
+

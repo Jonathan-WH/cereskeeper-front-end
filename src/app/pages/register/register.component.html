@@ -1,0 +1,56 @@
+<ion-content>
+  <div class="logo">
+    <img src="assets/logos/logo_tete_ceres.png" alt="">
+  </div>
+  <div class="register-container">
+    <h1 class="orbitron_extrabold">Create Your Account</h1>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating" >Email</ion-label>
+        <ion-input type="email" formControlName="email" [clearInput]="true"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        A valid email is required.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input type="text" formControlName="username" [clearInput]="true"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+        <p *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</p>
+        <p *ngIf="registerForm.get('username')?.errors?.['minlength']">Username must be at least 8 characters.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
+        <p *ngIf="registerForm.controls['password'].errors?.['required']">Password is required.</p>
+        <p *ngIf="registerForm.controls['password'].errors?.['minlength']">Password must be at least 8 characters.</p>
+        <p *ngIf="registerForm.controls['password'].errors?.['pattern']">
+          Password must include at least one uppercase letter, one number, and one special character.
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Confirm Password</ion-label>
+        <ion-input type="password" formControlName="confirmPassword" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.hasError('passwordMismatch')">
+        Passwords do not match.
+      </ion-text>
+
+      <div class="button-container">
+        <ion-button type="submit" [disabled]="registerForm.invalid" class="login orbitron_bold">Register</ion-button>
+      </div>
+    </form>
+    <ion-text color="danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </ion-text>
+
+    <p class="login-link jura_bold">Already have an account? <a class="login-link" (click)="goToLogin()">Login</a></p>
+  </div>
+</ion-content>

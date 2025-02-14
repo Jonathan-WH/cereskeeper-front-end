@@ -1,0 +1,72 @@
+<ion-content>
+  <div class="home-container">
+    <div class="header_welcome">
+      <div class="header">
+        <img src="assets/logos/logo_ceres_home.png" alt="CeresKeeper Logo" class="logo">
+      </div>
+
+      <div class="welcome-text">
+        <h1 class="orbitron_extrabold">CeresKeeper</h1>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="orbitron_bold">Your intelligent gardening assistant.</ion-card-title>
+
+          </ion-card-header>
+
+          <ion-card-content class="jura_bold">
+            Monitor your plants' health, track environmental conditions, and optimize your garden like never before.
+          </ion-card-content>
+        </ion-card>
+        <div class="action-buttons">
+          <ion-button fill="solid" (click)="goToRegister()" class="register orbitron_bold">
+            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+            Register
+          </ion-button>
+          <ion-button fill="solid" (click)="goToLogin()" class="login orbitron_bold">
+            <ion-icon name="walk-outline"></ion-icon>
+            Login
+          </ion-button>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="features">
+          <ion-card class="feature">
+            <ion-card-header>
+              <ion-card-title class="orbitron_bold">Track plant health with AI</ion-card-title>
+              <ion-icon name="leaf-outline"></ion-icon>
+              
+            </ion-card-header>
+            <ion-card-content class="jura_bold">
+              Detect early signs of disease and optimize growth using AI-driven analysis.
+            </ion-card-content>
+          </ion-card>
+        
+          <ion-card class="feature">
+            <ion-card-header>
+              <ion-card-title class="orbitron_bold">Measure environmental data</ion-card-title>
+              <ion-icon name="thermometer-outline"></ion-icon>
+             
+            </ion-card-header>
+            <ion-card-content class="jura_bold">
+              Monitor temperature, humidity, atmospheric pressure, and air quality in real time.
+            </ion-card-content>
+          </ion-card>
+        
+          <ion-card class="feature">
+            <ion-card-header>
+              <ion-card-title class="orbitron_bold">Analyze climate conditions</ion-card-title>
+              <ion-icon name="analytics-outline"></ion-icon>
+              
+            </ion-card-header>
+            <ion-card-content class="jura_bold">
+              Get insights and trends to adapt your garden to changing weather patterns.
+            </ion-card-content>
+          </ion-card>
+        
+    </div>
+
+  </div>
+</ion-content>

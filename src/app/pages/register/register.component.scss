@@ -1,0 +1,93 @@
+/* Applique un dégradé en fond sur ion-content */
+ion-content {
+    --ion-background-color: transparent; /* Désactive le fond blanc d’Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a); /* Dégradé vert */
+    display: flex;
+    flex-direction: column;
+}
+
+div.logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px
+}
+
+div.logo img {
+    width: 300px;
+    height: auto;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+div.register-container h1 {
+    text-align: center;
+    margin-top: 40px;
+}
+
+div.register-container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-self: center;
+    justify-self: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+ion-text {
+    margin-left: 20px
+}
+
+.button-container{
+
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container ion-button {
+    width: 80%;
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+}
+
+
+p.login-link {
+    text-align: center;
+}
+
+a.login-link {
+    cursor: pointer;
+    font-size: 12px;
+}
+
+
+
