@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { NoSpaceDirective } from '../../directive/no-space.directive';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule, FormsModule]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, FormsModule, NoSpaceDirective]
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

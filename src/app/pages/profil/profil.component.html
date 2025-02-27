@@ -21,7 +21,7 @@
       <!-- EMAIL -->
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input [clearInput]="true" type="email" formControlName="email"></ion-input>
+        <ion-input appNoSpace [clearInput]="true" type="email" formControlName="email" ></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
         A valid email is required.
@@ -30,7 +30,7 @@
       <!-- USERNAME -->
       <ion-item>
         <ion-label position="floating">Username</ion-label>
-        <ion-input [clearInput]="true" type="text" formControlName="username"></ion-input>
+        <ion-input appNoSpace [clearInput]="true" type="text" formControlName="username"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched">
         <p *ngIf="profileForm.get('username')?.errors?.['required']">Username is required.</p>
@@ -40,7 +40,7 @@
       <!-- NOUVEAU PASSWORD -->
       <ion-item>
         <ion-label position="floating">New Password (optional)</ion-label>
-        <ion-input type="password" formControlName="password">
+        <ion-input  appNoSpace type="password" formControlName="password">
           <ion-input-password-toggle slot="end"></ion-input-password-toggle>
         </ion-input>
       </ion-item>
@@ -54,7 +54,7 @@
       <!-- CONFIRM PASSWORD -->
       <ion-item>
         <ion-label position="floating">Confirm New Password</ion-label>
-        <ion-input type="password" formControlName="confirmPassword">
+        <ion-input appNoSpace type="password" formControlName="confirmPassword">
           <ion-input-password-toggle slot="end"></ion-input-password-toggle>
         </ion-input>
       </ion-item>

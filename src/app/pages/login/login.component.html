@@ -9,14 +9,8 @@
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input 
-        type="email" 
-        formControlName="email" 
-        [clearInput]="true"
-        autocomplete="off"
-        autocapitalize="none"
-        
-        spellcheck="fasle"></ion-input>
+        <ion-input type="email" formControlName="email" [clearInput]="true" autocomplete="off" autocapitalize="none"
+          appNoSpace spellcheck="fasle"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
         A valid email is required.
@@ -24,12 +18,8 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input 
-        type="password" 
-        formControlName="password"
-        autocomplete="new-password"
-    autocapitalize="none"
-    spellcheck="fasle" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+        <ion-input type="password" formControlName="password" autocomplete="new-password" autocapitalize="none"
+          spellcheck="fasle" appNoSpace><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
         Password is required.
@@ -52,7 +42,7 @@
     <div *ngIf="showResetPassword" class="reset-password-container">
       <ion-item>
         <ion-label position="floating">Enter your email</ion-label>
-        <ion-input type="email" [(ngModel)]="resetEmail"></ion-input>
+        <ion-input appNoSpace type="email" [(ngModel)]="resetEmail"></ion-input>
       </ion-item>
       <ion-button class="reset-mail-button" (click)="sendResetPasswordEmail()">Reset Password</ion-button>
       <ion-text color="success" *ngIf="resetSuccessMessage">

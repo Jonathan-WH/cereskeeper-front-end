@@ -8,13 +8,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { NoSpaceDirective } from '../../directive/no-space.directive';
 
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, NoSpaceDirective]
 })
 export class ProfilComponent implements OnInit {
   profileForm!: FormGroup;

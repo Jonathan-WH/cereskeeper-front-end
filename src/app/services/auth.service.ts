@@ -42,6 +42,10 @@ export class AuthService {
   /** 📌 Fonction d'inscription avec vérification préalable */
   async register(email: string, password: string, username: string) {
     try {
+      email = email.trim();
+      password = password.trim();
+      username = username.trim();
+
       console.log('📤 [DEBUG] Envoi de la requête à Flask pour créer l\'utilisateur...', { email, password, username });
 
       // 1. Envoi des données à Flask (et récupération du token)
@@ -69,6 +73,9 @@ export class AuthService {
   /** 📌 Fonction de connexion */
   async login(email: string, password: string) {
     try {
+      email = email.trim();
+      password = password.trim();
+
       console.log('📤 [DEBUG] Envoi de la requête à Flask pour login...');
 
       const response = await lastValueFrom(
@@ -176,4 +183,6 @@ export class AuthService {
 setUsername(newUsername: string) {
   this.usernameSubject.next(newUsername);
 }
+
+
 }

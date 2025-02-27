@@ -8,7 +8,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <ion-item>
         <ion-label position="floating" >Email</ion-label>
-        <ion-input type="email" formControlName="email" [clearInput]="true"></ion-input>
+        <ion-input appNoSpace  type="email" formControlName="email" [clearInput]="true" ></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
         A valid email is required.
@@ -16,7 +16,7 @@
 
       <ion-item>
         <ion-label position="floating">Username</ion-label>
-        <ion-input type="text" formControlName="username" [clearInput]="true"></ion-input>
+        <ion-input appNoSpace  type="text" formControlName="username" [clearInput]="true"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
         <p *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</p>
@@ -25,7 +25,7 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" formControlName="password" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+        <ion-input appNoSpace  type="password" formControlName="password" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
         <p *ngIf="registerForm.controls['password'].errors?.['required']">Password is required.</p>
@@ -37,7 +37,7 @@
 
       <ion-item>
         <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input type="password" formControlName="confirmPassword" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+        <ion-input  appNoSpace type="password" formControlName="confirmPassword" ><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="registerForm.hasError('passwordMismatch')">
         Passwords do not match.

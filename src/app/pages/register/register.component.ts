@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { NoSpaceDirective } from '../../directive/no-space.directive';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, NoSpaceDirective],
 
 })
 export class RegisterComponent implements OnInit {
