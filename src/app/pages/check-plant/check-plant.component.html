@@ -1,0 +1,98 @@
+<ion-header *ngIf="isAuthenticated$ | async">
+  <ion-toolbar>
+    <ion-title class="orbitron_medium">Check your plant</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="container-first" fullscreen="true" id="main-content">
+  <div class="card-container">
+
+    <ion-card class="action-card">
+      <ion-card-header>
+        <ion-card-title>Take a Picture</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Capture a clear photo of your plant. Please ensure you capture both the entire plant and close-ups of any visible symptoms.
+          (Max 3 photos allowed)
+        </p>
+        <ion-button expand="block" (click)="captureImage()">
+          <ion-icon slot="start" name="camera-sharp"></ion-icon>
+          
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-card class="action-card">
+      <ion-card-header>
+        <ion-card-title>Upload an Image</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Select a photo from your gallery. Choose an image that clearly shows your plant – include a wide shot as well as a close-up of any issues.
+          (Max 3 photos allowed)
+        </p>
+        <ion-button expand="block" (click)="selectImage()">
+          <ion-icon slot="start" name="images-sharp"></ion-icon>
+          
+        </ion-button>
+        <input type="file" accept="image/*" hidden #fileInput (change)="onFileSelected($event)" />
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <!-- Aperçu des images et formulaire de détails supplémentaires -->
+  <ion-card class="card-images" *ngIf="previewImages.length > 0">
+    <ion-card-header>
+      <ion-card-title>🌿 Plant Preview</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="responsive-col" size="4" *ngFor="let img of previewImages; let i = index">
+            <img [src]="img" alt="Plant preview" />
+            <ion-button class="delete-button" fill="clear" (click)="removeImage(i)">
+              <ion-icon class="close-icon" name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Formulaire de détails supplémentaires -->
+  <ion-list *ngIf="previewImages.length > 0">
+    <ion-item>
+      <ion-label position="floating">🌱 Plant Name (optional)</ion-label>
+      <ion-input [(ngModel)]="plantDetails.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">💧 Watering Frequency</ion-label>
+      <ion-input [(ngModel)]="plantDetails.watering"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">🌞 Growing Conditions</ion-label>
+      <ion-textarea [(ngModel)]="plantDetails.conditions"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <!-- Bouton pour lancer l'analyse -->
+  <ion-button *ngIf="previewImages.length > 0" (click)="analyzePlant()">
+    <ion-icon slot="start" name="search-outline"></ion-icon>
+    Analyze Plant
+  </ion-button>
+
+  <!-- Résultat de l'analyse -->
+  <ion-card *ngIf="analysisResult">
+    <ion-card-header>
+      <ion-card-title>🧠 Analysis Result</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ analysisResult }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

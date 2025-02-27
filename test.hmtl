@@ -9,19 +9,9 @@
     </style>
 </head>
 <body>
-    <!-- Inclure Three.js et FontLoader depuis un CDN fiable -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
-            }
-        }
-    </script>
-    <script type="module">
-        import * as THREE from 'three';
-        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-
+    <!-- Inclure Three.js depuis un CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
         // Initialisation de la scène
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -51,46 +41,29 @@
         // Matériau avec la texture
         const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
 
-        // Charger la police pour les lettres 3D
-        const fontLoader = new FontLoader();
-        fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-            // Créer les lettres "C" et "K" avec TextGeometry
-            const geometryC = new THREE.TextGeometry('C', {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-            });
-            const geometryK = new THREE.TextGeometry('K', {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-            });
+        // Créer les lettres "C" et "K" comme des boîtes simples (pour simplifier sans police 3D)
+        const geometryC = new THREE.BoxGeometry(1, 2, 0.2);
+        const geometryK = new THREE.BoxGeometry(1, 2, 0.2);
+        const meshC = new THREE.Mesh(geometryC, material);
+        const meshK = new THREE.Mesh(geometryK, material);
 
-            const meshC = new THREE.Mesh(geometryC, material);
-            const meshK = new THREE.Mesh(geometryK, material);
-
-            // Positionner les lettres
-            meshC.position.set(-0.8, 0, 0);
-            meshK.position.set(0.8, 0, 0);
-            scene.add(meshC);
-            scene.add(meshK);
-
-            // Animation
-            function animate() {
-                requestAnimationFrame(animate);
-                meshC.rotation.y += 0.03; // Rotation lente
-                meshK.rotation.y += 0.03;
-                renderer.render(scene, camera);
-            }
-            animate();
-        }, undefined, function (error) {
-            console.error('Erreur lors du chargement de la police :', error);
-        });
+        // Positionner les lettres
+        meshC.position.set(-0.8, 0, 0);
+        meshK.position.set(0.8, 0, 0);
+        scene.add(meshC);
+        scene.add(meshK);
 
         // Positionner la caméra
         camera.position.z = 5;
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            meshC.rotation.y += 0.03; // Rotation lente
+            meshK.rotation.y += 0.03;
+            renderer.render(scene, camera);
+        }
+        animate();
 
         // Ajuster la taille si la fenêtre change
         window.addEventListener('resize', () => {

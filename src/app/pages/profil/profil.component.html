@@ -1,0 +1,84 @@
+<ion-header *ngIf="isAuthenticated$ | async">
+  <ion-toolbar>
+    <ion-title class="orbitron_medium">Profile Information</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button contentId="main-content" menu="menuId"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" id="main-content">
+  
+  <div class="logo">
+    <img src="assets/logos/profil_robot.png" alt="CeresKeeper Logo">
+  </div>
+
+  <div class="profile-container">
+    <h1 class="orbitron_extrabold">Update Your Profile</h1>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      
+      <!-- EMAIL -->
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input [clearInput]="true" type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+        A valid email is required.
+      </ion-text>
+
+      <!-- USERNAME -->
+      <ion-item>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input [clearInput]="true" type="text" formControlName="username"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched">
+        <p *ngIf="profileForm.get('username')?.errors?.['required']">Username is required.</p>
+        <p *ngIf="profileForm.get('username')?.errors?.['minlength']">Username must be at least 8 characters.</p>
+      </ion-text>
+
+      <!-- NOUVEAU PASSWORD -->
+      <ion-item>
+        <ion-label position="floating">New Password (optional)</ion-label>
+        <ion-input type="password" formControlName="password">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched">
+        <p *ngIf="profileForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</p>
+        <p *ngIf="profileForm.get('password')?.errors?.['pattern']">
+          Password must include at least one uppercase letter, one number, and one special character.
+        </p>
+      </ion-text>
+
+      <!-- CONFIRM PASSWORD -->
+      <ion-item>
+        <ion-label position="floating">Confirm New Password</ion-label>
+        <ion-input type="password" formControlName="confirmPassword">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+      </ion-item>
+     <!-- ✅ Correction : Afficher l'erreur SEULEMENT si l'utilisateur a touché le champ "Confirm Password" -->
+    <ion-text color="danger" *ngIf="profileForm.hasError('passwordMismatch') && profileForm.get('confirmPassword')?.touched">
+      Passwords do not match.
+    </ion-text>
+
+      <!-- BOUTON -->
+      <div class="button-container">
+        <ion-button type="submit" [disabled]="profileForm.invalid" class="update-button orbitron_bold">
+          Update Profile
+        </ion-button>
+      </div>
+
+      <!-- MESSAGES D'ERREUR & SUCCÈS -->
+      <ion-text color="success" *ngIf="successMessage">
+        {{ successMessage }}
+      </ion-text>
+
+      <ion-text color="danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ion-text>
+      
+    </form>    
+  </div>
+</ion-content>

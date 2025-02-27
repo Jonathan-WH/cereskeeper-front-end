@@ -1,7 +1,72 @@
-/* Applique un dégradé en fond sur ion-content */
-ion-content {
-    --ion-background-color: transparent; /* Désactive le fond blanc d’Ionic */
+ion-content.container-first {
+    --ion-background-color: transparent !important; /* Désactive le fond Ionic */
     background: linear-gradient(135deg, #F5F5F5, #55fa5a); /* Dégradé vert */
+    height: 100vh; /* Assure une hauteur complète */
+    width: 100vw; /* Largeur complète */
     display: flex;
     flex-direction: column;
 }
+
+.welcome-name {
+    color: #55fa5a;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  ion-card {
+    background-color: white;
+  }
+  
+  .garden-card {
+   
+    width: 95%;
+    margin: 30px auto
+  }
+  
+  .grid-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
+  }
+  
+  .half-card {
+    width: 40%;
+  }
+
+  ion-card-header {
+    text-align: center;
+  }
+
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  img {
+    width: 70%;
+    height: auto;
+    align-self: center;
+  }
+
+  ion-button.check-health-plant, ion-button.create-garden {
+    margin:  20px auto 5px auto ;
+    width: 50%
+  }
+
+
+  @media (max-width: 750px) {
+    .grid-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    .half-card {
+        width: 80%;
+        justify-content: center;
+    }
+
+  }

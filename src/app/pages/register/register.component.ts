@@ -51,6 +51,5 @@ export class RegisterComponent implements OnInit {
   goToLogin() {
     this.router.navigate(['/login']);
   }
-
-  /*TODO fonction pour rediriger sur le login*/
+  
 }

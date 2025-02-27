@@ -1,0 +1,117 @@
+ion-content.container-first {
+    --ion-background-color: transparent !important;
+    /* Désactive le fond Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a);
+    /* Dégradé vert */
+    height: 100vh;
+    /* Assure une hauteur complète */
+    width: 100vw;
+    /* Largeur complète */
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-name {
+    color: #55fa5a;
+}
+
+/* Style pour le bouton de suppression */
+.delete-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 10;
+    background: transparent;
+    border: none;
+    padding: 0;
+
+}
+
+/* Style pour l'icône dans le bouton de suppression */
+.delete-button ion-icon {
+    font-size: 25px;
+    color: var(--ion-color-danger);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.081);
+    /* Optionnel : ajouter un fond blanc derrière l'icône */
+}
+
+@media (max-width: 750px) {
+    .responsive-col {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Style général pour les ion-cards d'action */
+
+.card-container {
+    display: flex;
+}
+
+.action-card {
+    margin: 16px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    animation: fadeIn 0.8s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.51);
+    width: 50%
+}
+
+.action-card ion-card-header ion-card-title {
+    text-align: center;
+}
+
+.card-images {
+    background-color: rgba(255, 255, 255, 0.51);
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Personnalisation des boutons d'action */
+.action-card ion-button {
+    --border-radius: 8px;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+    font-size: 1rem;
+    margin-top: 12px;
+}
+
+/* Style pour l'aperçu des images */
+.responsive-col {
+    position: relative;
+}
+
+.responsive-col img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Bouton de suppression sur l'image */
+.delete-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 10;
+    background: transparent;
+}
+
+.close-icon {
+    font-size: 30px;
+    color: red;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+}

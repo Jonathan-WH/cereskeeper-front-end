@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Auth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { MenuController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private auth: Auth, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private menuCtrl: MenuController) {}
 
   canActivate(): Observable<boolean> {
     return new Observable(observer => {
-      this.auth.onAuthStateChanged(user => {
-        if (user) {
-          observer.next(true); // L'utilisateur est connecté → accès autorisé
-          observer.complete();
+      this.authService.isAuthenticated().then(isAuth => {
+        if (isAuth) {
+          //Forcer le menu a s'activer lors de changement de route
+          this.menuCtrl.enable(true, 'menuId');
+          console.log("✅ [AuthGuard] Accès autorisé");
+          observer.next(true);
         } else {
-          this.router.navigate(['/login']); // Redirection si non connecté
+          console.log("❌ [AuthGuard] Accès refusé → Redirection vers login");
+          this.router.navigate(['/login']);
           observer.next(false);
-          observer.complete();
         }
+        observer.complete();
+      }).catch(error => {
+        console.error("❌ [AuthGuard] Erreur :", error);
+        this.router.navigate(['/login']);
+        observer.next(false);
+        observer.complete();
       });
     });
   }

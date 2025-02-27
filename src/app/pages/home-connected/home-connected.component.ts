@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { IonicModule, ToastController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { IonicModule, MenuController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Observable  } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-connected',
@@ -12,37 +14,43 @@ import { Router } from '@angular/router';
   imports: [CommonModule, IonicModule]
 })
 export class HomeConnectedComponent implements OnInit {
+  username: string = "";
+  isAuthenticated$: Observable<boolean>;
+  username$: Observable<string>;
 
   constructor(
-    private AuthService: AuthService, 
+    private authService: AuthService,
     private router: Router,
-    private toastController: ToastController
-  ) {}
+    private menuCtrl: MenuController,
 
-  ngOnInit() {}
+  ) {
+     // Initialisation des Observables
+        this.isAuthenticated$ = this.authService.isAuthenticated$;
+    
+        // Gestion du username$ avec switchMap pour résoudre la promesse
+        this.username$ = this.authService.isAuthenticated$.pipe(
+          switchMap((isAuthenticated) => {
+            if (isAuthenticated) {
+              return this.authService.getUserData().then(userData => userData?.username || 'Utilisateur');
+            }
+            return Promise.resolve(''); // Retourne une chaîne vide si non authentifié
+          })
+        );
+  }
 
-  async logout() {
-    try {
-      await this.AuthService.logout();
-
-      // ✅ Afficher le message de confirmation (toast)
-      const toast = await this.toastController.create({
-        message: 'You have been logged out successfully.',
-        duration: 2000,
-        position: 'bottom',
-        color: 'success'
-      });
-
-      await toast.present();
-
-      // ✅ Supprimer les champs auto-remplis (email & password)
-      setTimeout(() => {
-        localStorage.clear(); // Efface les données stockées localement
-        sessionStorage.clear(); // Efface les données de session
-        this.router.navigate(['/login']);
-      }, 500); // ⏳ Délai avant redirection
-    } catch (error) {
-      console.error("Logout failed:", error);
+  async ngOnInit() {
+    const userData = await this.authService.getUserData();
+    if (userData) {
+      this.username = userData.username;
     }
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.enable(true, 'menuId');
+    console.log("✅ [HomeConnected] Menu activé");
+  }
+
+  goToCheckPlant() {
+    this.router.navigate(['/check-plant']);
   }
 }

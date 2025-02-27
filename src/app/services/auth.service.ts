@@ -1,109 +1,105 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { MenuController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:5000'; // 🔥 URL du backend Flask
+  private usernameSubject = new BehaviorSubject<string | null>(null);
+  public username$ = this.usernameSubject.asObservable();
+  private apiUrl = 'http://127.0.0.1:5000'; // URL du backend Flask
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false); // État d'authentification réactif
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable(); // Observable pour les abonnés
 
-  constructor(private auth: Auth, private router: Router, private firestore: Firestore, private http: HttpClient) { }
-
-  /** 🔍 Vérifie si un email est déjà utilisé sur Firebase Auth */
-  async isEmailTaken(email: string): Promise<boolean> {
-    const methods = await fetchSignInMethodsForEmail(this.auth, email);
-    return methods.length > 0;
+  constructor(
+    private auth: Auth,
+    private router: Router,
+    private firestore: Firestore,
+    private http: HttpClient,
+    private toastController: ToastController,
+    private menuCtrl: MenuController
+  ) {
+    this.checkInitialAuthState(); // Vérifie l'état initial au démarrage
   }
 
-  /** 🔍 Vérifie si un username existe déjà dans Firestore */
-  async isUsernameTaken(username: string): Promise<boolean> {
-    const usersRef = collection(this.firestore, "users");
-    const q = query(usersRef, where("username", "==", username));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty; // True si le username existe déjà
+  
+
+  // Vérifie l'état d'authentification initial basé sur le token
+  private async checkInitialAuthState() {
+    const isAuth = await this.isAuthenticated();
+    this.isAuthenticatedSubject.next(isAuth);
   }
 
 
-/** 📌 Fonction d'inscription avec vérification préalable */
-async register(email: string, password: string, username: string) {
-  try {
-    console.log("📤 [DEBUG] Envoi de la requête à Flask pour créer l'utilisateur...", { email, password, username });
+  /** 📌 Fonction d'inscription avec vérification préalable */
+  async register(email: string, password: string, username: string) {
+    try {
+      console.log('📤 [DEBUG] Envoi de la requête à Flask pour créer l\'utilisateur...', { email, password, username });
 
-    // ✅ 1. Envoi des données à Flask pour créer l'utilisateur
-    const backendResponse = await lastValueFrom(
-      this.http.post<any>(`${this.apiUrl}/register`, { email, password, username })
-    );
+      // 1. Envoi des données à Flask (et récupération du token)
+      const backendResponse = await lastValueFrom(
+        this.http.post<any>(`${this.apiUrl}/register`, { email, password, username })
+      );
 
-    console.log('✅ [DEBUG] Réponse du backend:', backendResponse);
+      console.log('✅ [DEBUG] Réponse du backend:', backendResponse);
 
-    // ✅ 2. Connexion à Firebase pour récupérer le token (sans recréer l’utilisateur)
-    console.log("🔥 [DEBUG] Connexion à Firebase pour récupérer le Token...");
-    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-    const user = userCredential.user;
-    const idToken = await user.getIdToken();
-    console.log("🔑 [DEBUG] Token Firebase récupéré:", idToken);
+      // 2. Stockage du token et mise à jour de l'état
+      const idToken = backendResponse.idToken;
+      localStorage.setItem('jwt_token', idToken);
+      this.isAuthenticatedSubject.next(true); // Mise à jour de l'état réactif
 
-    // ✅ 3. Stocker le token et rediriger
-    localStorage.setItem('jwt_token', idToken);
-    this.router.navigate(['/home-connected']);
-
-    return userCredential;
-    
-  } catch (error: any) {
-    console.error('❌ [ERROR] Registration error:', error);
-
-    // 🔥 Intercepter l'erreur Firebase et renvoyer un message personnalisé
-    if (error.code === 'auth/email-already-in-use') {
-      throw new Error('This email is already in use. Please use another or log in.');
-    } else {
-      throw error; // Renvoie les autres erreurs normalement
+      console.log('🔑 [DEBUG] Token stocké :', idToken);
+      console.log('🔄 [DEBUG] Redirection vers /home-connected...');
+      this.router.navigate(['/home-connected']);
+      return backendResponse;
+    } catch (error: any) {
+      console.error('❌ [ERROR] Registration error:', error);
+      throw new Error(error?.error?.message || 'Registration failed');
     }
   }
-}
 
   /** 📌 Fonction de connexion */
   async login(email: string, password: string) {
     try {
-      // 🔥 Connexion avec Firebase
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      const user = userCredential.user;
-  
-      // 🔥 Récupération du Token Firebase
-      const idToken = await user.getIdToken();
-      console.log("🚀 Token Firebase récupéré :", idToken);
-  
-      // ✅ Stocke le token
-      localStorage.setItem('jwt_token', idToken);
-  
-      // ✅ Envoie le token au backend pour validation
-      const headers = new HttpHeaders({ Authorization: `Bearer ${idToken}` });
-  
-      console.log("📡 Envoi de la requête avec Header :", headers);
-  
+      console.log('📤 [DEBUG] Envoi de la requête à Flask pour login...');
+
       const response = await lastValueFrom(
-        this.http.get<any>(`${this.apiUrl}/home-connected`, { headers })
+        this.http.post<any>(`${this.apiUrl}/login`, { email, password })
       );
-  
-      console.log('✅ Login success:', response);
+
+      console.log('✅ [DEBUG] Réponse du backend :', response);
+
+      if (!response.idToken) {
+        throw new Error('No idToken received from backend.');
+      }
+
+      localStorage.setItem('jwt_token', response.idToken);
+      this.isAuthenticatedSubject.next(true); // Mise à jour de l'état réactif
+
+      console.log('🔑 [DEBUG] Token stocké :', response.idToken);
+      console.log('🔄 [DEBUG] Redirection vers /home-connected...');
       this.router.navigate(['/home-connected']);
-      return response;
+      console.log('🔄 [DEBUG] Redirection après réussi vers /home-connected...');
     } catch (error: any) {
-      console.error('❌ Login error:', error);
-      throw new Error("Invalid email or password.");
+      console.error('❌ [ERROR] Login error:', error);
+      throw new Error('Invalid email or password.');
     }
   }
 
   /** 📌 Fonction de déconnexion */
   async logout() {
     try {
-      await signOut(this.auth);
-
-      // ❌ Supprimer le token JWT du localStorage
-      localStorage.removeItem('jwt_token');
+      await signOut(this.auth); // Déconnexion de Firebase Auth
+      localStorage.removeItem('jwt_token'); // Suppression du token
+      this.isAuthenticatedSubject.next(false); // Mise à jour de l'état réactif
 
       this.router.navigate(['/login']);
     } catch (error) {
@@ -112,7 +108,7 @@ async register(email: string, password: string, username: string) {
     }
   }
 
-  // ✅ Vérifie si un token est déjà présent et valide
+  /** ✅ Vérifie si un token est déjà présent et valide */
   async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem('jwt_token');
     if (!token) return false;
@@ -122,20 +118,62 @@ async register(email: string, password: string, username: string) {
       await lastValueFrom(this.http.get<any>(`${this.apiUrl}/home-connected`, { headers }));
       return true;
     } catch (error) {
-      console.error('Auth validation error:', error);
-      this.logout(); // 🔴 Déconnecte l'utilisateur si le token est invalide
+      console.error('Token error', error);
+      if (error instanceof HttpErrorResponse && error.status === 401) {
+        this.logoutWithMessage('Your session has expired. Please log in again.');
+      }
       return false;
     }
   }
 
-  /** 📌 Fonction de reset du mot de passe */
+  /** 📌 Déconnexion avec message */
+  async logoutWithMessage(message: string) {
+    await this.logout();
+
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      color: 'warning'
+    });
+
+    await toast.present();
+    this.router.navigate(['/login']);
+  }
+
+  /** 📌 Fonction de réinitialisation du mot de passe */
   async resetPassword(email: string) {
     try {
       await sendPasswordResetEmail(this.auth, email);
-      console.log("Password reset email sent");
+      console.log('Password reset email sent');
     } catch (error) {
-      console.error("Reset password error:", error);
-      throw new Error("Failed to send password reset email.");
+      console.error('Reset password error:', error);
+      throw new Error('Failed to send password reset email.');
     }
   }
+
+  /** 📌 Récupération des données utilisateur */
+  async getUserData(): Promise<any> {
+    try {
+      const token = localStorage.getItem('jwt_token');
+      if (!token) throw new Error('No token found');
+
+      const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+      const response = await lastValueFrom(this.http.get<any>(`${this.apiUrl}/home-connected`, { headers }));
+
+      return response.user; // Retourne les infos utilisateur
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  }
+
+  getToken(): string | null { 
+    return localStorage.getItem('jwt_token');
+  }
+
+  // ✅ Permet de mettre à jour le username après modification du profil
+setUsername(newUsername: string) {
+  this.usernameSubject.next(newUsername);
+}
 }

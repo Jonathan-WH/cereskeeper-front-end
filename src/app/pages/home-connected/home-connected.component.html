@@ -1,27 +1,50 @@
-<ion-menu side="end" contentId="main-content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content class="ion-padding">
-    <p>This is the menu content.</p>
-    <ion-button (click)="logout()">Logout</ion-button>
-  </ion-content>
-</ion-menu>
 
-<!-- ⚠️ Ce div est essentiel pour que ion-menu fonctionne -->
-<div id="main-content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Home Connected</ion-title>
-      <ion-buttons slot="end">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+<ion-header *ngIf="isAuthenticated$ | async">
+  <ion-toolbar>
+    <ion-title class="orbitron_medium">
+      Welcome <span class="welcome-name orbitron_bold">{{ username$ | async }}</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button contentId="main-content" menu="menuId"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+   
+<ion-content class="container-first" fullscreen="true" id="main-content">
+    <ion-card class="garden-card">
+      <ion-card-header>
+        <ion-card-title class="orbitron_bold">My Garden</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        🌱 Future informations about the garden...
+      </ion-card-content>
+    </ion-card>
 
-  <ion-content>
-    <p>Welcome to the home page!</p>
+    <div class="grid-container">
+      <ion-card class="half-card">
+        <ion-card-header>
+          <ion-card-title class="orbitron_bold">Check Health Plant</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <img src="assets/logos/robot_loupe.png" alt="">
+          <ion-button (click)="goToCheckPlant()" class="check-health-plant orbitron_bold">
+            <ion-icon name="search-outline"></ion-icon>
+            Check
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="half-card">
+        <ion-card-header>
+          <ion-card-title class="orbitron_bold">Create New Garden</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <img src="assets/logos/robot_pelle.png" alt="">
+          <ion-button class="create-garden orbitron_bold">
+            <ion-icon name="hammer-outline"></ion-icon>
+            Create
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </ion-content>
-</div>
