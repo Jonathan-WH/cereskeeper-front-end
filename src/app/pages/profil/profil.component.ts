@@ -91,13 +91,15 @@ export class ProfilComponent implements OnInit {
         this.successMessage = response.message;
         this.showToast('Profile updated successfully!', 'success');
 
+         // ✅ Mettre à jour l'Observable du username pour rafraîchir le header
+         this.authService.setUsername(username);
+
         // 🔄 Redirection vers home et forcer la mise à jour du header
         setTimeout(() => {
           this.router.navigate(['/home-connected']);
         }, 1500);
 
-        // ✅ Mettre à jour l'Observable du username pour rafraîchir le header
-        this.authService.setUsername(username);
+       
 
       } catch (error: any) {
         console.error('❌ Error updating profile:', error);

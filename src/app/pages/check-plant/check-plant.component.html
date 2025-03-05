@@ -8,7 +8,15 @@
 </ion-header>
 
 <ion-content class="container-first" fullscreen="true" id="main-content">
-  <div class="card-container">
+
+  <ion-loading
+  [isOpen]="isLoading"
+  message="Analyzing the plant..."
+  spinner="crescent">
+</ion-loading>
+
+
+  <div class="card-container" *ngIf="!analysisDone">
 
     <ion-card class="action-card">
       <ion-card-header>
@@ -46,7 +54,7 @@
 
 
   <!-- Aperçu des images et formulaire de détails supplémentaires -->
-  <ion-card class="card-images" *ngIf="previewImages.length > 0">
+  <ion-card class="card-images" *ngIf="previewImages.length > 0 && !analysisDone">
     <ion-card-header>
       <ion-card-title>🌿 Plant Preview</ion-card-title>
     </ion-card-header>
@@ -65,34 +73,79 @@
   </ion-card>
 
   <!-- Formulaire de détails supplémentaires -->
-  <ion-list *ngIf="previewImages.length > 0">
+  <!-- Nouveau formulaire de détails supplémentaires -->
+  <ion-item *ngIf="previewImages.length > 0 && !analysisDone" class="item-toggle">
+    <ion-label>Add more information (Optional)</ion-label>
+    <ion-toggle [(ngModel)]="showMoreInfo" slot="end"></ion-toggle>
+  </ion-item>
+  <ion-list *ngIf="previewImages.length > 0 && !analysisDone && showMoreInfo" class="list-details">
+    <ion-item class="info-container">
+  
+    <ion-text class="list-info-text"><strong>The more information you provide, the more accurate the analysis will be</strong>
+
+    </ion-text>
+  </ion-item>
+
+  <ion-list>
     <ion-item>
-      <ion-label position="floating">🌱 Plant Name (optional)</ion-label>
-      <ion-input [(ngModel)]="plantDetails.name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">💧 Watering Frequency</ion-label>
-      <ion-input [(ngModel)]="plantDetails.watering"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">🌞 Growing Conditions</ion-label>
-      <ion-textarea [(ngModel)]="plantDetails.conditions"></ion-textarea>
+      <ion-select 
+        aria-label="Environment" 
+        interface="action-sheet" 
+        placeholder="Select environment (Optional)" 
+        [(ngModel)]="plantDetails.environment">
+        
+        <ion-select-option value="house">home</ion-select-option>
+        <ion-select-option value="greenhouse">greenhouse</ion-select-option>
+        <ion-select-option value="outdoor">outdoor</ion-select-option>
+  
+      </ion-select>
+
+      <!-- Bouton pour effacer la sélection -->
+      <ion-button fill="clear" color="grey" (click)="clearSelection()">
+        <ion-icon slot="end" name="close-circle-sharp"></ion-icon>
+      </ion-button>
+  
     </ion-item>
   </ion-list>
 
+  <ion-item>
+    <ion-label  position="floating" placeholder="test">Plant Variety (Optional):</ion-label>
+    <ion-input [clearInput]="true" [(ngModel)]="plantDetails.variety"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label position="floating">Symptoms (Optional):</ion-label>
+    <ion-textarea [(ngModel)]="plantDetails.symptoms"></ion-textarea>
+  
+    <!-- Bouton pour effacer le texte -->
+    <ion-button class="button-symptoms" fill="clear" color="medium" slot="end" (click)="clearTextAera()">
+      <ion-icon color="grey" name="close-circle-sharp"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-list>
+
   <!-- Bouton pour lancer l'analyse -->
-  <ion-button *ngIf="previewImages.length > 0" (click)="analyzePlant()">
+  <div class="button-analyse" *ngIf="!analysisDone">
+ <ion-button *ngIf="previewImages.length > 0" (click)="analyzePlant()">
     <ion-icon slot="start" name="search-outline"></ion-icon>
     Analyze Plant
   </ion-button>
+  </div>
+
+ 
 
   <!-- Résultat de l'analyse -->
-  <ion-card *ngIf="analysisResult">
-    <ion-card-header>
-      <ion-card-title>🧠 Analysis Result</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>{{ analysisResult }}</p>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
+ 
+  
+   <div  *ngIf="analysisResult">
+
+    <div [innerHTML]="analysisResult"></div>
+    <ion-button class="analyse-other-picture" expand="block" color="" (click)="reloadPage()">
+      Analyze Other Picture
+    </ion-button>
+   </div>
+  
+
+
+
+

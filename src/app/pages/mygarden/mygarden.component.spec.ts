@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { MygardenComponent } from './mygarden.component';
+import { MyGardenComponent } from './mygarden.component';
 
 describe('MygardenComponent', () => {
-  let component: MygardenComponent;
-  let fixture: ComponentFixture<MygardenComponent>;
+  let component: MyGardenComponent;
+  let fixture: ComponentFixture<MyGardenComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MygardenComponent],
+      imports: [MyGardenComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MygardenComponent);
+    fixture = TestBed.createComponent(MyGardenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

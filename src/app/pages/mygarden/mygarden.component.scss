@@ -1,0 +1,29 @@
+ion-content.container-first {
+    --ion-background-color: transparent !important;
+    /* Désactive le fond Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a);
+    /* Dégradé vert */
+    height: 100vh;
+    /* Assure une hauteur complète */
+    width: 100vw;
+    /* Largeur complète */
+    display: flex;
+    flex-direction: column;
+}
+
+ion-card.garden {
+    background-color: rgba(255, 255, 255, 0.702);
+    margin-top: 20px;
+    width: 50%;
+}
+
+ion-card.garden ion-card-header ion-card-title {
+    text-align: center;
+    
+}   
+
+div.ion-card-container {
+    display: flex;
+    width: 100%;
+  
+}

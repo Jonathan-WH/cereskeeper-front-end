@@ -29,20 +29,14 @@ ion-content.container-first {
 
 /* Style pour l'icône dans le bouton de suppression */
 .delete-button ion-icon {
-    font-size: 25px;
+    font-size: 30px;
     color: var(--ion-color-danger);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.081);
     /* Optionnel : ajouter un fond blanc derrière l'icône */
 }
 
-@media (max-width: 750px) {
-    .responsive-col {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-    }
-}
+
 
 /* Style général pour les ion-cards d'action */
 
@@ -106,12 +100,109 @@ ion-content.container-first {
     top: 4px;
     right: 4px;
     z-index: 10;
-    background: transparent;
 }
 
-.close-icon {
+ion-icon.close-icon {
     font-size: 30px;
     color: red;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.82)!important;
+}
+
+.list-details {
+    background-color: rgba(255, 255, 255, 0.51);
+width: 50%;
+margin-left: auto;
+margin-right: auto;
+border-radius: 10px;
+}
+
+div.button-analyse {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-analyse ion-button {
+    width: 50%;
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+}
+
+.button-symptoms{
+   margin-top: 25px;
+}
+
+::ng-deep ion-card.card-analyse {
+    width: 80% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  ::ng-deep ion-card-subtitle.subtile-analyse {
+    color: #fffe00 !important;
+  }
+  
+  ::ng-deep p.white {
+    color: white !important;
+    margin-top: 10px!important;
+    margin-bottom: 10px !important;
+  }
+
+  .info-container {
+    background: linear-gradient(135deg,#55fa5a,#F5F5F5);
+
+  }
+
+  .list-info-text {
+    margin-left: auto;
+margin-right: auto;
+margin-top: 20px;
+margin-bottom: 20px;
+  }
+
+
+  .analyse-other-picture {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .item-toggle {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto
+  }
+
+@media (max-width: 750px) {
+    .responsive-col {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .action-card {
+        width: 90%;
+    }  
+    
+    .list-details {
+        width: 90%;
+    }
+
+    .button-analyse ion-button {
+        width: 90%;
+    }
 }

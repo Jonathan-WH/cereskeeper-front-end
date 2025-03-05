@@ -27,14 +27,9 @@ export class HomeConnectedComponent implements OnInit {
      // Initialisation des Observables
         this.isAuthenticated$ = this.authService.isAuthenticated$;
     
-        // Gestion du username$ avec switchMap pour résoudre la promesse
-        this.username$ = this.authService.isAuthenticated$.pipe(
-          switchMap((isAuthenticated) => {
-            if (isAuthenticated) {
-              return this.authService.getUserData().then(userData => userData?.username || 'Utilisateur');
-            }
-            return Promise.resolve(''); // Retourne une chaîne vide si non authentifié
-          })
+        // ✅ Solution propre : Utilisation directe de l'Observable username$
+        this.username$ = this.authService.username$.pipe(
+          map(username => username ?? '') // Convertit `null` en chaîne vide ''
         );
   }
 
@@ -52,5 +47,9 @@ export class HomeConnectedComponent implements OnInit {
 
   goToCheckPlant() {
     this.router.navigate(['/check-plant']);
+  }
+
+  goToCreateGarden() {
+    this.router.navigate(['/create-garden']);
   }
 }

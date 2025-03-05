@@ -2,13 +2,14 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-check-plant',
@@ -18,41 +19,132 @@ import { AuthService } from '../../services/auth.service';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 
-export class CheckPlantComponent {
+export class CheckPlantComponent implements ViewWillEnter {
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
 
-  previewImages: string[] = [];  // ✅ Stocke plusieurs images
-  uploadedImageUrls: string[] = [];  // ✅ Stocke les URLs des images uploadées
-  analysisResult: string | null = null;
-  plantDetails = {
-    name: '',
-    watering: '',
-    conditions: ''
-  };
+  previewImages: string[] = [];  // Stocke les aperçus des images
+  uploadedImageUrls: string[] = [];  // Stocke les URLs des images envoyées
+  analysisResult: SafeHtml | null = null;  // Stocke le HTML analysé en toute sécurité
+  plantDetails = { environment: '', variety: '', symptoms: '' };
   isAuthenticated$: Observable<boolean>;
+  isLoading = false; // ✅ Indique si l'analyse est en cours
+  analysisDone = false; // ✅ Pour masquer tout sauf l'analyse une fois terminée
+  showMoreInfo = false; // ✅ Par défaut, la section est cachée
+
 
   constructor(
     private http: HttpClient,
     private toastController: ToastController,
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer  // Nécessaire pour afficher du HTML Ionic sécurisé
   ) {
+    // Initialisation des valeurs par défaut
+    this.plantDetails = {
+      environment: '',
+      variety: '',
+      symptoms: ''
+    };
     this.isAuthenticated$ = this.authService.isAuthenticated$;
+  }
+
+  ionViewWillEnter() {
+    console.log("🔄 Composant réinitialisé !");
+    this.resetComponent();
+  }
+
+  resetComponent() {
+    this.previewImages = [];
+    this.uploadedImageUrls = [];
+    this.analysisResult = null;
+    this.plantDetails = {
+      environment: '',
+      variety: '',
+      symptoms: ''
+    };
+    this.isLoading = false;
+    this.analysisDone = false;
+    this.showMoreInfo = false;
+  }
+
+  async analyzePlant() {
+    if (this.previewImages.length === 0) {
+      this.showToast('Please upload at least one image.', 'warning');
+      return;
+    }
   
+    this.isLoading = true;
+  
+    try {
+      // 🔥 Récupérer l'ID utilisateur Firebase
+      const user = await this.authService.getUserData();
+      if (!user || !user.uid) {
+        throw new Error('User not authenticated');
+      }
+  
+      const uploadedImageUrls: string[] = [];
+  
+      for (const previewImage of this.previewImages) {
+        let file: File | null = null;
+  
+        if (previewImage.startsWith('data:image/')) {
+          file = this.dataUrlToFile(previewImage, `plant_${Date.now()}_${Math.random()}.jpg`);
+        } else if (previewImage.startsWith('blob:')) {
+          const response = await fetch(previewImage);
+          const blob = await response.blob();
+          file = new File([blob], `plant_${Date.now()}_${Math.random()}.jpg`, { type: 'image/jpeg' });
+        }
+  
+        if (file) {
+          const uploadedUrl = await this.uploadImageFile(file);
+          if (uploadedUrl) {
+            uploadedImageUrls.push(uploadedUrl);
+          }
+        }
+      }
+  
+      if (uploadedImageUrls.length !== this.previewImages.length) {
+        throw new Error('Some images failed to upload');
+      }
+  
+      // ✅ Ajouter user_id pour stocker correctement l'analyse
+      const payload = {
+        user_id: user.uid, // 🔥 Ajout de l'UID Firebase
+        image_urls: uploadedImageUrls,
+        environment: this.plantDetails.environment || 'Not specified',
+        variety: this.plantDetails.variety || 'Unknown',
+        symptoms: this.plantDetails.symptoms || 'No symptoms reported'
+      };
+  
+      const response = await firstValueFrom(
+        this.http.post<any>('http://127.0.0.1:5000/analyze-plant', payload)
+      );
+  
+      console.log('✅ Analysis response:', response);
+  
+      let cleanHtml = response.analysis
+        .replace(/```html/g, '')
+        .replace(/```/g, '')
+        .trim();
+  
+      this.analysisResult = this.sanitizer.bypassSecurityTrustHtml(cleanHtml);
+      this.analysisDone = true;
+    } catch (error) {
+      console.error('❌ Error during analysis:', error);
+      this.showToast('Analysis failed. Try again.', 'danger');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   async uploadImageFile(file: File): Promise<string | null> {
     try {
       const formData = new FormData();
-      if (file) {
-        formData.append('image', file);
-      } else {
-        throw new Error('File is null');
-      }
-  
+      formData.append('image', file);
+
       const response = await firstValueFrom(
         this.http.post<any>('http://127.0.0.1:5000/upload-image', formData)
       );
-  
+
       console.log('✅ Image uploaded:', response);
       return response.image_url || null;
     } catch (error) {
@@ -61,31 +153,28 @@ export class CheckPlantComponent {
     }
   }
 
-  // 📸 Capture depuis la caméra
   async captureImage() {
     if (this.previewImages.length >= 3) {
       this.showToast('Maximum 3 images allowed!', 'warning');
       return;
     }
-  
+
     try {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri,  // 📸 Capture une image sous forme d'URI (fichier brut)
+        resultType: CameraResultType.Uri,
         source: CameraSource.Camera
       });
-  
+
       if (image.webPath) {
-        // ✅ Affiche un aperçu de l'image
         this.previewImages.push(image.webPath);
       }
     } catch (error) {
-      console.error('Error capturing image:', error);
+      console.error('❌ Error capturing image:', error);
     }
   }
 
-  // 🖼️ Upload depuis la galerie
   selectImage() {
     if (this.previewImages.length >= 3) {
       this.showToast('Maximum 3 images allowed!', 'warning');
@@ -94,114 +183,25 @@ export class CheckPlantComponent {
     this.fileInput.nativeElement.click();
   }
 
-  // 📂 Gestion de l'upload de fichier
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const reader = new FileReader();
       reader.onload = () => {
-        if (this.previewImages.length < 3) {  // ✅ Limiter à 3 images
+        if (this.previewImages.length < 3) {
           this.previewImages.push(reader.result as string);
-        } else {
-          console.warn('⚠️ Maximum of 3 images allowed');
         }
       };
       reader.readAsDataURL(input.files[0]);
     }
   }
 
-// 🔍 Analyse de la plante avec plusieurs images
-async analyzePlant() {
-  if (this.previewImages.length === 0) return;
-
-  try {
-    const uploadedImageUrls: string[] = [];
-
-    // 📤 Uploader toutes les images avant l'analyse
-    for (const previewImage of this.previewImages) {
-      let file: File | null = null;
-
-      // ✅ Si c'est une Data URL, convertir en fichier
-      if (previewImage.startsWith('data:image/')) {
-        file = this.dataUrlToFile(previewImage, `plant_${Date.now()}_${Math.random()}.jpg`);
-      } else if (previewImage.startsWith('blob:')) {
-        // ✅ Si c'est un Blob URL, récupérer le Blob et créer un fichier
-        const response = await fetch(previewImage);
-        const blob = await response.blob();
-        file = new File([blob], `plant_${Date.now()}_${Math.random()}.jpg`, { type: 'image/jpeg' });
-      }
-
-      // 📤 Uploader l'image seulement si elle a été convertie en fichier
-      if (file) {
-        const uploadedUrl = await this.uploadImageFile(file);
-        if (uploadedUrl) {
-          uploadedImageUrls.push(uploadedUrl);
-        } else {
-          console.warn(`❌ Upload failed for file: ${file.name}`);
-        }
-      } else {
-        console.warn('❌ Invalid file format detected, skipping...');
-      }
-    }
-
-    if (uploadedImageUrls.length !== this.previewImages.length) {
-      throw new Error('Some images failed to upload');
-    }
-
-    // 🔥 Préparer la requête pour l'analyse
-    const payload = {
-      image_urls: uploadedImageUrls,  // ✅ Envoyer toutes les URLs
-      plant_name: this.plantDetails.name || 'Unknown',
-      plant_context: this.plantDetails.conditions || 'No context provided'
-    };
-
-    // 📡 Envoi à Flask
-    const response = await firstValueFrom(
-      this.http.post<any>('http://127.0.0.1:5000/analyze-plant', payload)
-    );
-
-    this.analysisResult = response.analysis;
-
-    // ✅ Toast de succès
-    const toast = await this.toastController.create({
-      message: 'Analysis complete!',
-      duration: 2000,
-      color: 'success'
-    });
-    toast.present();
-  } catch (error) {
-    console.error('❌ Error during analysis:', error);
-  }
-}
-
-  // 🔁 Convertir Data URL en fichier pour FormData
-  private dataUrlToFile(dataUrl: string, filename: string): File | null {
-    if (!dataUrl.startsWith('data:image/')) {
-      console.error('❌ The provided string is not a valid Data URL:', dataUrl);
-      return null;  // ⛔ Évite les erreurs pour les URLs Firebase Storage
-    }
-  
-    const arr = dataUrl.split(',');
-    const mimeMatch = arr[0].match(/:(.*?);/);
-  
-    if (!mimeMatch) {
-      console.error('❌ MIME type could not be extracted:', arr[0]);
-      return null;
-    }
-  
-    const mime = mimeMatch[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-  
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-  
-    return new File([u8arr], filename, { type: mime });
+  removeImage(index: number) {
+    this.previewImages.splice(index, 1);
+    this.uploadedImageUrls.splice(index, 1);
+    this.showToast('Image removed', 'warning');
   }
 
-  // 🔔 Affichage des notifications
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message,
@@ -211,9 +211,42 @@ async analyzePlant() {
     toast.present();
   }
 
-  removeImage(index: number) {
-    this.previewImages.splice(index, 1);
-    this.uploadedImageUrls.splice(index, 1);
-    this.showToast('Image removed', 'warning');
-}
+  private dataUrlToFile(dataUrl: string, filename: string): File | null {
+    if (!dataUrl.startsWith('data:image/')) {
+      console.error('❌ Invalid Data URL:', dataUrl);
+      return null;
+    }
+
+    const arr = dataUrl.split(',');
+    const mimeMatch = arr[0].match(/:(.*?);/);
+
+    if (!mimeMatch) {
+      console.error('❌ MIME type extraction failed:', arr[0]);
+      return null;
+    }
+
+    const mime = mimeMatch[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+
+  clearSelection() {
+    this.plantDetails.environment = '';
+  }
+
+  clearTextAera() {
+    this.plantDetails.symptoms = '';
+  }
+
+  reloadPage() {
+    window.location.reload();
+  }
 }

@@ -1,4 +1,3 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
@@ -168,6 +167,11 @@ export class AuthService {
       const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
       const response = await lastValueFrom(this.http.get<any>(`${this.apiUrl}/home-connected`, { headers }));
 
+       // ✅ Mise à jour du usernameSubject en cas de changement
+       if (response.user && response.user.username) {
+        this.usernameSubject.next(response.user.username);
+      }
+
       return response.user; // Retourne les infos utilisateur
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -183,6 +187,4 @@ export class AuthService {
 setUsername(newUsername: string) {
   this.usernameSubject.next(newUsername);
 }
-
-
 }

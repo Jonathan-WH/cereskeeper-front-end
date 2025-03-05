@@ -1,3 +1,60 @@
-<p>
-  mygarden works!
-</p>
+<ion-header *ngIf="isAuthenticated$ | async">
+  <ion-toolbar>
+    <ion-title class="orbitron_medium">
+      My Garden
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="container-first" fullscreen="true" id="main-content">
+  <!-- Affichage si il y un jardin -->
+  <ion-item *ngIf="gardens.length >=1" lines="none">
+    <ion-button slot="end" (click)="goToCreateGarden()" class="create-garden orbitron_bold">
+      <ion-icon name="hammer-outline"></ion-icon>
+      Create
+    </ion-button>
+  </ion-item>
+
+  <div class="ion-card-container">
+    <ion-card class="garden" *ngFor="let garden of gardens">
+      <ion-button color="danger" fill="" (click)="confirmDeleteGarden(garden.id)">
+        <ion-icon slot="end" name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-card-header>
+
+        <ion-card-title class="orbitron_extrabold">{{ garden.name }}</ion-card-title>
+
+        <ion-card-subtitle>
+          Created on {{ garden.startDate | date:'longDate' }} - {{ garden.type | titlecase }}
+
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-button expand="full" fill="outline" (click)="viewGarden(garden.id)">
+          Manage Garden
+        </ion-button>
+        <ion-button color="danger" shape="round" class="delete-button" expand="full"
+          (click)="confirmDeleteGarden(garden.id)">
+          <ion-icon name="trash-sharp"></ion-icon>
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+
+  <!-- Affichage si aucun jardin -->
+  <ion-item *ngIf="gardens.length === 0">
+    <ion-label>No gardens found. Create one to start tracking!</ion-label>
+    <ion-button (click)="goToCreateGarden()" class="create-garden orbitron_bold">
+      <ion-icon name="hammer-outline"></ion-icon>
+      Create
+    </ion-button>
+  </ion-item>
+</ion-content>

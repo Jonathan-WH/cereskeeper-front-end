@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, LoadingController  } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { NoSpaceDirective } from '../../directive/no-space.directive';
@@ -20,7 +20,14 @@ export class LoginComponent implements OnInit {
   resetSuccessMessage: string = '';
   resetErrorMessage: string = '';
   errorMessage: string = '';
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
+  isLoading: boolean = false; // ✅ Ajout du spinner
+
+
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    private authService: AuthService,
+    private loadingController: LoadingController) { }
 
   async ngOnInit() {
 
@@ -38,16 +45,31 @@ export class LoginComponent implements OnInit {
   ionViewWillEnter() {
     this.loginForm.reset();
     this.errorMessage = '';
+    this.isLoading = false; // 🔄 Réinitialiser le spinner
   }
+
+  // async showLoading() {
+  //   const loading = await this.loadingController.create({
+  //     message: 'Connecting to your account...', // ✅ Texte de chargement
+  //     spinner: 'crescent',
+  //     duration: 5000 // Timeout de sécurité si jamais il reste bloqué
+  //   });
+
+  //   await loading.present();
+  //   return loading;
+  // }
 
   async onLogin() {
 
     if (this.loginForm.valid) {
+      this.isLoading = true; // ✅ Affiche le spinner
       const { email, password } = this.loginForm.value;
       try {
         await this.authService.login(email, password);
         this.router.navigate(['/home-connected']); // Redirection après connexion
+        this.isLoading = false; // ✅ Cache le spinner
       } catch (error: any) {
+        this.isLoading = false; // ✅ Cache le spinner
         console.error("Login error:", error);
         this.errorMessage = error.message; // Affiche le message d'erreur personnalisé
       }

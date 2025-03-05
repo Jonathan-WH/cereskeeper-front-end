@@ -1,20 +1,58 @@
-
-  
 <ion-header *ngIf="isAuthenticated$ | async">
   <ion-toolbar>
-    <ion-title class="orbitron_medium">
-      Check plant history
-    </ion-title>
+    <ion-title class="orbitron_medium">Check Plant History</ion-title>
     <ion-buttons slot="end">
       <ion-menu-button menu="menuId"></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<ion-content class="container-first" fullscreen="true" id="main-content">
 
-  <ion-content class="container-first" fullscreen="true" id="main-content">
-   
+  <!-- 📅 Sélection de la date avec indicateurs -->
+  <div class="date-picker-container">
+    <ion-datetime 
+      [(ngModel)]="selectedDate" 
+      (ionChange)="filterByDate($event)" 
+      display-format="YYYY-MM-DD"
+      [highlightedDates]="highlightedDates"
+      preferWheel="false"
+      presentation="date">
+    </ion-datetime>
+  </div>
 
-   <h1>Check Plant</h1>
+  <!-- 📜 Liste des analyses filtrées sous forme d'accordion -->
+  <ion-accordion-group *ngIf="(filteredAnalysis$ | async) as analysisHistory">
+    <ion-accordion *ngFor="let analysis of analysisHistory">
+      
+      <ion-item slot="header">
+        <ion-label>
+          <ion-item slot="header">
+            <ion-label class="orbitron_medium">
+              {{ analysis.extractedTitle === 'Plant Analysis Result' ? analysis.extractedSubtitle : analysis.extractedTitle }}
+            </ion-label>
+          </ion-item>
+        </ion-label>
+      </ion-item>
 
-  </ion-content>
+      <div class="analysis-content" slot="content">
+        <div class="img-analysis">
+          <img [src]="analysis.images[0]" alt="Plant preview" />
+        </div>
+
+        <ion-card-content>
+          <div [innerHTML]="sanitizeHtml(analysis.analysis)"></div>
+          <ion-button color="danger" shape="round" class="delete-button" expand="full" (click)="deleteAnalysis(analysis.id)">
+            <ion-icon name="trash-sharp"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </div>
+
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-item class="notfound-analyse" *ngIf="(filteredAnalysis$ | async)?.length === 0">
+    <ion-label>No analysis found on this date, please pick another date</ion-label>
+  </ion-item>
+
+</ion-content>

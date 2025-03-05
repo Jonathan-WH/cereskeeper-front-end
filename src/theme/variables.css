@@ -40,6 +40,8 @@
     --ion-color-gold-dark: #C1A878;
     --ion-color-gray-brown: #676251;
     --ion-color-black-warm: #2F2B26;
+
+    
 }
 
 /* 🎨 Mode sombre */
@@ -60,17 +62,17 @@
 }
 
 .orbitron_medium {
-    font-family: "Orbitron", serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
+    font-family: "Orbitron", serif!important;
+    font-optical-sizing: auto!important;
+    font-weight: 500!important;
+    font-style: normal!important;
 }
 
 .orbitron_bold {
-    font-family: "Orbitron", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
+    font-family: "Orbitron", serif!important;
+    font-optical-sizing: auto!important;
+    font-weight: 700!important;
+    font-style: normal!important;
 }
 
 .orbitron_extrabold {

@@ -8,6 +8,72 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <h1>Create your garden</h1>
+
+<ion-content class="container-first" fullscreen="true" id="main-content">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title  class="orbitron_medium">Set up your garden</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="gardenForm" (ngSubmit)="onCreateGarden()">
+        <!-- Nom du jardin -->
+        <ion-item>
+          <ion-label class="orbitron_medium" position="floating">Garden name:</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+
+        <!-- Date de début -->
+        <ion-item class="date-picker-container" lines="none">
+          <ion-label class="orbitron_medium">Choose starting date :</ion-label>
+          <ion-datetime presentation="date" formControlName="startDate" display-format="YYYY-MM-DD"></ion-datetime>
+        </ion-item>
+
+        <!-- Sélection du type de jardin -->
+        <ion-item>
+         
+          <ion-select  class="orbitron_medium"
+        aria-label="Garden Environment" 
+        interface="action-sheet" 
+        placeholder="Select Garden Environment" 
+        formControlName="type" (ionChange)="onGardenTypeChange()">
+        
+        <ion-select-option class="orbitron_medium" value="outdoor">Outdoor</ion-select-option>
+        <ion-select-option class="orbitron_medium" value="greenhouse">Greenhouse</ion-select-option>
+        <ion-select-option class="orbitron_medium" value="home">Home</ion-select-option>
+  
+      </ion-select>
+        </ion-item>
+
+        <!-- 🔥 Affichage du choix GPS ou Code Postal UNIQUEMENT pour outdoor -->
+        <div *ngIf="showLocationOptions">
+          <ion-item>
+            <ion-text class="orbitron_medium grey">
+            Select the location for weather data: Use GPS for automatic detection or enter your postal code manually.
+            </ion-text>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label class="orbitron_medium">GPS</ion-label>
+            <ion-toggle formControlName="useGPS" (ionChange)="toggleLocation('gps', $event)"></ion-toggle>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="orbitron_medium">Postal Code</ion-label>
+            <ion-toggle formControlName="usePostalCode" (ionChange)="toggleLocation('postal', $event)"></ion-toggle>
+          </ion-item>
+
+          <!-- 🔥 Code postal activé uniquement si sélectionné -->
+          <ion-item *ngIf="gardenForm.get('usePostalCode')?.value">
+            <ion-label position="floating">Enter Postal Code</ion-label>
+            <ion-input formControlName="postalCode"></ion-input>
+          </ion-item>
+        </div>
+         <div class="button-create">
+           <ion-button  expand="block" type="submit" [disabled]="gardenForm.invalid">Create Garden</ion-button>
+         </div>
+        <!-- Bouton de soumission -->
+       
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
