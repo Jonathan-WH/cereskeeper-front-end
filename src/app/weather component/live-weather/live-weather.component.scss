@@ -1,0 +1,63 @@
+ion-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-right: 1px black solid;
+  }
+
+  //sélectionner dernière colonne
+  ion-col:last-child {
+    border-right: none;
+  }
+  ion-icon {
+    font-size: 2.3rem;
+    color: var(--ion-color-primary);
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--ion-color-primary);
+  }
+
+  ion-col.logo-weather ion-icon {
+    font-size: 4rem;
+  }
+
+  .black {
+    color: black;
+  }
+
+  .blue {
+    color: blue;
+  }
+
+  .yellow {
+    color: yellow;
+  }
+
+  ion-card {
+    background-color: rgba(255, 255, 255, 0.635);
+   
+}
+
+ion-card-content {
+    padding: 5px!important
+}
+
+  @media (max-width: 750px) {
+
+    ion-col.logo-weather ion-icon {
+        font-size: 3rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: var(--ion-color-primary);
+      }
+
+      ion-icon {
+        font-size: 1.8rem;
+        color: var(--ion-color-primary);
+      }
+  }

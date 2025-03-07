@@ -1,0 +1,23 @@
+<ion-card *ngIf="liveSensor$ | async as sensor">
+  <ion-card-content>
+    <ion-row class="ion-align-items-center ion-justify-content-around">
+      <h1 class="orbitron_medium">Sensor_1</h1>
+      
+      <ion-col>
+        <ion-icon class="black" name="thermometer-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ sensor.temperature | number:'1.2-2' }} °C</strong></p>
+      </ion-col>
+      
+      <ion-col>
+        <ion-icon class="blue" name="water-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ sensor.humidity | number:'1.2-2' }} %</strong></p>
+      </ion-col>
+      
+      <ion-col>
+        <ion-icon class="black" name="speedometer-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ sensor.pressure }} hPa</strong></p>
+      </ion-col>
+
+    </ion-row>
+  </ion-card-content>
+</ion-card>

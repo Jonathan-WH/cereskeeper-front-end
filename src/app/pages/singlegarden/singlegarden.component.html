@@ -1,3 +1,61 @@
-<p>
-  singlegarden works!
-</p>
+<ion-header *ngIf="isAuthenticated$ | async">
+  <ion-toolbar>
+    <ion-title class="orbitron_medium">
+      {{ gardenData?.name || 'Loading...' }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="container-first">
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading garden data...</p>
+  </div>
+
+  <div *ngIf="!loading && gardenData">
+    <ion-card class="card-title">
+      <ion-card-header>
+       
+        <ion-card-subtitle class="orbitron_extrabold subtitle-right">
+          <span>Created on {{ gardenData.startDate | date:'longDate' }}</span> <span class="yellow">Type: {{ gardenData.type | titlecase }} GROWING</span>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- 🌤 Météo en direct -->
+    <app-live-weather 
+  *ngIf="gardenData?.name?.toLowerCase().includes('outdoor')" 
+  [gardenId]="gardenId">
+</app-live-weather>
+
+    <!-- 🔥 Historique météo -->
+    <app-weather-history [gardenId]="gardenId"></app-weather-history>
+
+    <!-- 🌡 Température en direct du sensor pour le jardin  -->
+    <app-live-sensor  *ngIf="gardenData?.name?.toLowerCase().includes('greenhouse')"  ></app-live-sensor>
+
+    
+
+    <!-- 🏡 Modélisation 2D -->
+    <div class="garden-2d-placeholder">
+      <ion-card class="design-garden">
+        <ion-card-header>
+          <ion-card-title class="orbitron_extrabold">Design your garden</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+
+          <div class="underc-container">
+       <img class="underc" src="assets/logos/underconstruction.png" alt="">
+         <img class="underc" src="assets/logos/underconstruction.png" alt="">
+         <img class="underc" src="assets/logos/underconstruction.png" alt="">
+
+          </div>
+  
+        </ion-card-content>
+  </ion-card>
+    </div>
+  </div>
+</ion-content>

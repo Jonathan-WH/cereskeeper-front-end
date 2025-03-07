@@ -1,0 +1,55 @@
+ion-content.container-first {
+    --ion-background-color: transparent !important;
+    /* Désactive le fond Ionic */
+    background: linear-gradient(135deg, #F5F5F5, #55fa5a);
+    /* Dégradé vert */
+    height: 100vh;
+    /* Assure une hauteur complète */
+    width: 100vw;
+    /* Largeur complète */
+    display: flex;
+    flex-direction: column;
+}
+
+.yellow {
+    color: rgb(205, 205, 3);
+    
+}
+
+ion-card.card-title, ion-card.design-garden {
+    background-color: rgba(255, 255, 255, 0.635);
+   
+}
+
+ion-card-subtitle.subtitle-right{
+    position:relative
+
+}
+//dernier span
+ion-card-subtitle.subtitle-right span:last-child{
+    position:absolute;
+    right:0;
+  
+}
+div.underc-container{
+    display:flex;
+    justify-content:space-evenly;
+    margin-bottom:10px;
+}
+
+    div.garden-2d-placeholder ion-card ion-card-header ion-card-title{text-align: center;
+         font-size: 2rem;
+         margin-bottom: 20px;  
+        }
+img.underc {
+    width:30%
+}
+
+@media screen and (max-width: 600px) {
+    ion-card-subtitle.subtitle-right span:last-child{
+        position:inherit;
+        right: inherit;
+        display: block;
+      
+    }
+  }

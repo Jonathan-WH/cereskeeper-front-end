@@ -9,6 +9,7 @@ import { CreateGardenComponent } from './pages/create-garden/create-garden.compo
 import { ProfilComponent } from './pages/profil/profil.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MyGardenComponent } from './pages/mygarden/mygarden.component';
+import { SingleGardenComponent } from './pages/singlegarden/singlegarden.component';
 
 export const routes: Routes = [
   { path: '', component: HomeUnconnectedComponent }, // Page d'accueil par défaut
@@ -20,5 +21,6 @@ export const routes: Routes = [
   { path: 'create-garden', component: CreateGardenComponent, canActivate: [AuthGuard]  },
   { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
   { path: 'my-garden', component: MyGardenComponent, canActivate: [AuthGuard] },
+  { path: 'single-garden/:id', component: SingleGardenComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' } // Redirection des pages inconnues vers l'accueil
 ];

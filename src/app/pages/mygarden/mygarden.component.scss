@@ -14,7 +14,10 @@ ion-content.container-first {
 ion-card.garden {
     background-color: rgba(255, 255, 255, 0.702);
     margin-top: 20px;
-    width: 50%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+   
 }
 
 ion-card.garden ion-card-header ion-card-title {
@@ -22,8 +25,69 @@ ion-card.garden ion-card-header ion-card-title {
     
 }   
 
-div.ion-card-container {
+ion-content.ion-card-container {
     display: flex;
     width: 100%;
   
+}
+
+ion-icon.hammer {
+    margin-right: 5px;
+}
+
+ion-button.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.yellow {
+    color: rgb(205, 205, 3);
+    
+}   
+
+ ion-button.button-manage {
+    width: 50%;
+    margin: 10px 0;
+    font-size: 1rem;
+    --border-radius: 8px;
+    --color: white;
+    --background: #C1A878;
+    --background-hover: #a08b64;
+    --background-activated: #a08b64;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ion-card-subtitle {
+    margin-top: 15px;
+}
+
+ion-card-subtitle.subtitle-right{
+ 
+position: relative;
+}
+//dernier span
+ion-card-subtitle.subtitle-right span{
+  
+  position: absolute;
+    right: 20px;
+}
+
+@media (max-width: 750px) {
+    ion-button.button-manage{
+        width: 90%;
+    }
+
+    ion-card-subtitle.subtitle-right{
+        position: inherit;
+    
+    }
+    //dernier span
+    ion-card-subtitle.subtitle-right span{
+        position: inherit;
+        right: inherit;
+        display: block;
+      
+    }
 }

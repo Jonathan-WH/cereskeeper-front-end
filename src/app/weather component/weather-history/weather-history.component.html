@@ -1,0 +1,39 @@
+<ion-card class="weather-card">
+  <ion-card-content>
+    <ion-accordion-group>
+      <ion-accordion value="weatherHistory">
+        <ion-item slot="header">
+          <ion-label class="orbitron_medium">Show weather history</ion-label>
+        </ion-item>
+        <div slot="content">
+          <div *ngIf="weatherData$ | async as weatherData">
+            
+                <!-- Filtres -->
+                <div class="filter-buttons">
+                  <ion-segment [(ngModel)]="selectedFilter">
+                    <ion-segment-button value="1h" (click)="setFilter('1h')">
+                      <ion-label class="orbitron_medium">1h</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="4h" (click)="setFilter('4h')">
+                      <ion-label class="orbitron_medium">4h</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="12h" (click)="setFilter('12h')">
+                      <ion-label class="orbitron_medium">12h</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="24h" (click)="setFilter('24h')">
+                      <ion-label class="orbitron_medium">24h</ion-label>
+                    </ion-segment-button>
+                  </ion-segment>
+                </div>
+
+                <!-- Graphique météo -->
+                <div class="chart-wrapper">
+                  <canvas #weatherChart></canvas>
+                </div>
+             
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card-content>
+</ion-card>

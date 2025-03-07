@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SingleGardenComponent } from './singlegarden.component';
+import { LiveSensorComponent } from './live-sensor.component';
 
-describe('SinglegardenComponent', () => {
-  let component: SingleGardenComponent;
-  let fixture: ComponentFixture<SingleGardenComponent>;
+describe('LiveSensorComponent', () => {
+  let component: LiveSensorComponent;
+  let fixture: ComponentFixture<LiveSensorComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SingleGardenComponent ],
+      declarations: [ LiveSensorComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SingleGardenComponent);
+    fixture = TestBed.createComponent(LiveSensorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

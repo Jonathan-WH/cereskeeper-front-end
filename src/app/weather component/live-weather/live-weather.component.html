@@ -1,0 +1,73 @@
+<ion-card *ngIf="liveWeather$ | async as weather">
+  <ion-card-content>
+    <ion-row class="ion-align-items-center ion-justify-content-around">
+      <ion-col size="2" class="logo-weather">
+      <!-- Ciel clair -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 1 || weather.weather_symbol === 101" name="sunny-outline"></ion-icon>
+
+  <!-- Légèrement nuageux -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 2 || weather.weather_symbol === 102" name="partly-sunny-outline"></ion-icon>
+
+  <!-- Partiellement nuageux -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 3 || weather.weather_symbol === 103" name="cloud-outline"></ion-icon>
+
+  <!-- Nuageux -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 4 || weather.weather_symbol === 104" name="cloud-outline"></ion-icon>
+
+  <!-- Pluie -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 5 || weather.weather_symbol === 105" name="rainy-outline"></ion-icon>
+
+  <!-- Pluie et neige / Grésil -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 6 || weather.weather_symbol === 106" name="rainy-outline"></ion-icon>
+
+  <!-- Neige -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 7 || weather.weather_symbol === 107" name="snow-outline"></ion-icon>
+
+  <!-- Averses de pluie -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 8 || weather.weather_symbol === 108" name="rainy-outline"></ion-icon>
+
+  <!-- Averses de neige -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 9 || weather.weather_symbol === 109" name="snow-outline"></ion-icon>
+
+  <!-- Averses de grésil -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 10 || weather.weather_symbol === 110" name="partly-sunny-outline"></ion-icon>
+
+  <!-- Brouillard léger -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 11 || weather.weather_symbol === 111" name="cloud-outline"></ion-icon>
+
+  <!-- Brouillard dense -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 12 || weather.weather_symbol === 112" name="cloud-outline"></ion-icon>
+
+  <!-- Pluie verglaçante -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 13 || weather.weather_symbol === 113" name="rainy-outline"></ion-icon>
+
+  <!-- Orages -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 14 || weather.weather_symbol === 114" name="thunderstorm-outline"></ion-icon>
+
+  <!-- Bruine -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 15 || weather.weather_symbol === 115" name="rainy-outline"></ion-icon>
+
+  <!-- Tempête de sable -->
+  <ion-icon class="black" *ngIf="weather.weather_symbol === 16 || weather.weather_symbol === 116" name="cloud-outline"></ion-icon>
+      </ion-col>
+      <ion-col>
+  
+        <ion-icon class="black" name="thermometer-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ weather.temperature }} °C</strong></p>
+      </ion-col>
+      <ion-col>
+        <ion-icon class="blue" name="water-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ weather.humidity }} %</strong></p>
+      </ion-col>
+      <ion-col>
+        <ion-icon class="black" name="speedometer-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>{{ weather.pressure }} hPa</strong></p>
+      </ion-col>
+      <ion-col>
+        <ion-icon class="black" name="sunny-outline"></ion-icon>
+        <p class="orbitron_medium"><strong>UV: {{ weather.uv_index }}</strong></p>
+      </ion-col>
+     
+    </ion-row>
+  </ion-card-content>
+</ion-card>

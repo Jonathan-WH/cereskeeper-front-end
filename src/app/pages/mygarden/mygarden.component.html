@@ -14,39 +14,38 @@
   <!-- Affichage si il y un jardin -->
   <ion-item *ngIf="gardens.length >=1" lines="none">
     <ion-button slot="end" (click)="goToCreateGarden()" class="create-garden orbitron_bold">
-      <ion-icon name="hammer-outline"></ion-icon>
+      <ion-icon class="hammer" name="hammer-outline"></ion-icon>
       Create
     </ion-button>
   </ion-item>
 
-  <div class="ion-card-container">
+  <ion-content class="ion-card-container">
+   
     <ion-card class="garden" *ngFor="let garden of gardens">
-      <ion-button color="danger" fill="" (click)="confirmDeleteGarden(garden.id)">
-        <ion-icon slot="end" name="trash-outline"></ion-icon>
-      </ion-button>
       <ion-card-header>
-
+       
+         
+      
         <ion-card-title class="orbitron_extrabold">{{ garden.name }}</ion-card-title>
-
-        <ion-card-subtitle>
-          Created on {{ garden.startDate | date:'longDate' }} - {{ garden.type | titlecase }}
-
+        <ion-card-subtitle class="subtitle-right">
+          Started the {{ garden.startDate | date:'longDate' }} - <span class="yellow">Type: {{ garden.type | titlecase }} Growing</span>
         </ion-card-subtitle>
+        
+       
       </ion-card-header>
-
+      
       <ion-card-content>
-        <ion-button expand="full" fill="outline" (click)="viewGarden(garden.id)">
+        <ion-button class="button-manage orbitron_extrabold" expand="block"  (click)="viewGarden(garden.id)">
           Manage Garden
         </ion-button>
-        <ion-button color="danger" shape="round" class="delete-button" expand="full"
-          (click)="confirmDeleteGarden(garden.id)">
-          <ion-icon name="trash-sharp"></ion-icon>
-        </ion-button>
-
       </ion-card-content>
+      <ion-button class="delete-button" color="danger" fill="clear" (click)="confirmDeleteGarden(garden.id)">
+        <ion-icon slot="icon-only" name="trash-sharp"></ion-icon>
+      </ion-button>
     </ion-card>
+    
 
-  </div>
+  </ion-content>
 
 
   <!-- Affichage si aucun jardin -->

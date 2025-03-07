@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { addIcons } from 'ionicons';
-import { searchOutline, hammerOutline, logOutOutline, personOutline, flowerOutline, folderOutline, home, cameraSharp, imagesSharp, closeCircleOutline, closeCircleSharp, trashSharp, refreshOutline } from 'ionicons/icons';
+import { searchOutline, hammerOutline, logOutOutline, personOutline, flowerOutline, folderOutline, home, cameraSharp, imagesSharp, closeCircleOutline, closeCircleSharp, trashSharp, refreshOutline, trashBinOutline, cloudDoneOutline, cloudOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     public toastController: ToastController
   ) {
-    addIcons({ searchOutline, hammerOutline, logOutOutline, personOutline, flowerOutline, folderOutline, home, cameraSharp, imagesSharp, closeCircleOutline,  closeCircleSharp, trashSharp, refreshOutline });
+    addIcons({ searchOutline, hammerOutline, logOutOutline, personOutline, flowerOutline, folderOutline, home, cameraSharp, imagesSharp, closeCircleOutline,  closeCircleSharp, trashSharp, refreshOutline, trashBinOutline, cloudDoneOutline, cloudOutline });
 
     // Initialisation des Observables
     this.isAuthenticated$ = this.authService.isAuthenticated$;
