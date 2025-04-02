@@ -170,7 +170,7 @@ export class CreateGardenComponent implements OnInit {
     // ✅ Envoi au serveur Flask
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
-    this.http.post('http://127.0.0.1:5000/create-garden', gardenData, { headers }).subscribe({
+    this.http.post('http://127.0.0.1:5000/garden/create', gardenData, { headers }).subscribe({
       next: async (response) => {
         console.log("✅ Garden created:", response);
         await loading.dismiss();

@@ -48,7 +48,7 @@ export class MyGardenComponent implements OnInit {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     try {
-      const response = await firstValueFrom(this.http.get<any[]>('http://127.0.0.1:5000/get-user-gardens', { headers }));
+      const response = await firstValueFrom(this.http.get<any[]>('http://127.0.0.1:5000/garden/get-all', { headers }));
       this.gardens = response || [];
       console.log("✅ Gardens loaded:", this.gardens);
     } catch (error) {
@@ -98,7 +98,7 @@ export class MyGardenComponent implements OnInit {
     await loading.present();
 
     try {
-      await this.http.delete(`http://127.0.0.1:5000/delete-garden?gardenId=${gardenId}`, { headers }).toPromise();
+      await firstValueFrom(this.http.delete(`http://127.0.0.1:5000/garden/delete-garden?gardenId=${gardenId}`, { headers }));
       this.gardens = this.gardens.filter(g => g.id !== gardenId);
       console.log(`✅ Garden ${gardenId} deleted`);
       this.presentToast("Garden deleted successfully!", "success");

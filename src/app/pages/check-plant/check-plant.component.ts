@@ -116,7 +116,7 @@ export class CheckPlantComponent implements ViewWillEnter {
       };
   
       const response = await firstValueFrom(
-        this.http.post<any>('http://127.0.0.1:5000/analyze-plant', payload)
+        this.http.post<any>('http://127.0.0.1:5000/analysis/analyze-plant', payload)
       );
   
       console.log('✅ Analysis response:', response);
@@ -142,7 +142,7 @@ export class CheckPlantComponent implements ViewWillEnter {
       formData.append('image', file);
 
       const response = await firstValueFrom(
-        this.http.post<any>('http://127.0.0.1:5000/upload-image', formData)
+        this.http.post<any>('http://127.0.0.1:5000/image/upload-image', formData)
       );
 
       console.log('✅ Image uploaded:', response);

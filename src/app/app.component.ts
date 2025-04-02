@@ -45,12 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Fermer le menu après chaque navigation
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.menuCtrl.close();
-      }
-    });
+    
   }
 
   async logout() {

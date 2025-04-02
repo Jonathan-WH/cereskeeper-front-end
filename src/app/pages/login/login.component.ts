@@ -29,23 +29,42 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private loadingController: LoadingController) { }
 
-  async ngOnInit() {
-
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
-
-    if (await this.authService.isAuthenticated()) {
-      this.router.navigate(['/home-connected']);
+    async ngOnInit() {
+      this.loginForm = this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+      });
+    
+      this.isLoading = true;
+    
+      try {
+        const loggedIn = await this.authService.isAuthenticated();
+        if (loggedIn) {
+          // ⏳ Attends que la navigation soit bien terminée
+          await this.router.navigate(['/home-connected']);
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+      }
+      this.isLoading = false; // ✅ Cache le spinner
     }
-  }
 
   // Utilisez ionViewWillEnter pour réinitialiser le formulaire chaque fois que la vue est affichée
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.loginForm.reset();
     this.errorMessage = '';
-    this.isLoading = false; // 🔄 Réinitialiser le spinner
+    this.isLoading = true;
+  
+    try {
+      const loggedIn = await this.authService.isAuthenticated();
+      if (loggedIn) {
+        await this.router.navigate(['/home-connected']);
+      }
+    } catch (e) {
+      console.error("Erreur auth dans ionViewWillEnter:", e);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   // async showLoading() {
@@ -66,8 +85,9 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
       try {
         await this.authService.login(email, password);
-        this.router.navigate(['/home-connected']); // Redirection après connexion
         this.isLoading = false; // ✅ Cache le spinner
+        this.router.navigate(['/home-connected']); // Redirection après connexion
+       
       } catch (error: any) {
         this.isLoading = false; // ✅ Cache le spinner
         console.error("Login error:", error);

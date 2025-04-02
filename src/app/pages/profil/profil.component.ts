@@ -81,7 +81,7 @@ export class ProfilComponent implements OnInit {
 
       try {
         const response = await firstValueFrom(
-          this.http.post<any>('http://127.0.0.1:5000/update-profile', payload, {
+          this.http.post<any>('http://127.0.0.1:5000/auth/update-profile', payload, {
             headers: {
               Authorization: `Bearer ${await this.authService.getToken()}`
             }

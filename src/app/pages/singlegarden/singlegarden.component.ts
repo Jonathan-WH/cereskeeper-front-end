@@ -54,8 +54,8 @@ export class SingleGardenComponent implements OnInit {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     try {
-      console.log(`🛠 URL envoyée à Flask: http://127.0.0.1:5000/get-garden?id=${this.gardenId}`);
-      const response = await firstValueFrom(this.http.get<any>(`http://127.0.0.1:5000/get-garden?id=${this.gardenId}`, { headers }));
+      console.log(`🛠 URL envoyée à Flask: http://127.0.0.1:5000/garden/get?id=${this.gardenId}`);
+      const response = await firstValueFrom(this.http.get<any>(`http://127.0.0.1:5000/garden/get?id=${this.gardenId}`, { headers }));
       this.gardenData = response;
       console.log("✅ Garden data loaded:", this.gardenData);
     } catch (error) {
@@ -76,7 +76,7 @@ export class SingleGardenComponent implements OnInit {
 
     try {
         console.log(`🌤 Mise à jour des données météo pour le jardin ${this.gardenId}...`);
-        const response = await firstValueFrom(this.http.post(`http://127.0.0.1:5000/update-weather-data`, 
+        const response = await firstValueFrom(this.http.post(`http://127.0.0.1:5000/weather/update`, 
             { gardenId: this.gardenId }, { headers }));
 
         console.log("✅ Weather data updated:", response);

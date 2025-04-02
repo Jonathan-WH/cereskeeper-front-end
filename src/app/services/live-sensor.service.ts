@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LiveSensorService {
-  private apiUrl = 'http://127.0.0.1:5000/live-sensor-data';
+  private apiUrl = 'http://127.0.0.1:5000/sensor/live'; // URL de l'API Flask
 
   constructor(private http: HttpClient) {}
 

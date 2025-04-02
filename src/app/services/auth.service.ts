@@ -49,7 +49,7 @@ export class AuthService {
 
       // 1. Envoi des données à Flask (et récupération du token)
       const backendResponse = await lastValueFrom(
-        this.http.post<any>(`${this.apiUrl}/register`, { email, password, username })
+        this.http.post<any>(`${this.apiUrl}/auth/register`, { email, password, username })
       );
 
       console.log('✅ [DEBUG] Réponse du backend:', backendResponse);
@@ -78,7 +78,7 @@ export class AuthService {
       console.log('📤 [DEBUG] Envoi de la requête à Flask pour login...');
 
       const response = await lastValueFrom(
-        this.http.post<any>(`${this.apiUrl}/login`, { email, password })
+        this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password })
       );
 
       console.log('✅ [DEBUG] Réponse du backend :', response);
@@ -121,7 +121,7 @@ export class AuthService {
 
     try {
       const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-      await lastValueFrom(this.http.get<any>(`${this.apiUrl}/home-connected`, { headers }));
+      await lastValueFrom(this.http.get<any>(`${this.apiUrl}/auth/home-connected`, { headers }));
       return true;
     } catch (error) {
       console.error('Token error', error);
@@ -165,7 +165,7 @@ export class AuthService {
       if (!token) throw new Error('No token found');
 
       const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-      const response = await lastValueFrom(this.http.get<any>(`${this.apiUrl}/home-connected`, { headers }));
+      const response = await lastValueFrom(this.http.get<any>(`${this.apiUrl}/auth/home-connected`, { headers }));
 
        // ✅ Mise à jour du usernameSubject en cas de changement
        if (response.user && response.user.username) {

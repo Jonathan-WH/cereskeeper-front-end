@@ -23,9 +23,17 @@ div.logo img {
 }
 
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 div.login-container {
@@ -51,6 +59,7 @@ div.login-container {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -74,7 +83,8 @@ div.login-container {
     --background-activated: #a08b64;
 }
 
-p.register-link, p.forgot-password {
+p.register-link,
+p.forgot-password {
     text-align: center;
     cursor: pointer;
     font-size: 12px;
@@ -84,7 +94,7 @@ p.forgot-password:hover {
     text-decoration: underline;
 }
 
-p{
+p {
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -93,7 +103,7 @@ p.forgot-password {
     margin-bottom: 10px;
 }
 
-ion-button.reset-mail-button{
+ion-button.reset-mail-button {
     margin: 10px 0;
     font-size: 1rem;
     --border-radius: 8px;
@@ -103,4 +113,3 @@ ion-button.reset-mail-button{
     --background-activated: #2e7031;
     animation: fadeInCards 1s ease-in-out forwards;
 }
-

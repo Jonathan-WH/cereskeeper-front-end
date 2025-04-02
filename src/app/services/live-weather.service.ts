@@ -6,7 +6,7 @@ import { Observable, timer, switchMap, of, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class LiveWeatherService {
-  private apiUrl = 'http://127.0.0.1:5000/live-weather';
+  private apiUrl = 'http://127.0.0.1:5000/weather/live';
 
   constructor(private http: HttpClient) {}
 

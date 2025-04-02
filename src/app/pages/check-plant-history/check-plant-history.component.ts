@@ -111,7 +111,7 @@ async loadAnalysisHistory() {
 
   try {
     const response = await lastValueFrom(
-      this.http.get<any[]>('http://127.0.0.1:5000/get-analysis-history', { headers })
+      this.http.get<any[]>('http://127.0.0.1:5000/analysis/get-analysis-history', { headers })
     );
 
     // ✅ Nettoyage et formatage des données

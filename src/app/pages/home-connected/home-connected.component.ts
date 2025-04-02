@@ -37,6 +37,7 @@ export class HomeConnectedComponent implements OnInit {
     const userData = await this.authService.getUserData();
     if (userData) {
       this.username = userData.username;
+      
     }
   }
 

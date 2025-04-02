@@ -14,6 +14,6 @@ export class WeatherService {
     const token = localStorage.getItem('jwt_token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     
-    return this.http.get<any>(`${this.apiUrl}/get-weather-history?gardenId=${gardenId}`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/weather/history?gardenId=${gardenId}`, { headers });
   }
 }
